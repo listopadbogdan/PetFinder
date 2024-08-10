@@ -4,21 +4,21 @@ namespace PetFinder.Domain.Models;
 
 public class Pet
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = default!;
-    public AnimalType AnimalType { get; set; }
-    public string GeneralDescription { get; set; } = default!;
-    public string Breed { get; set; } = default!;
-    public string Color { get; set; } = default!;
-    public string HealthInformation { get; set; } = default!;
-    public string Address { get; set; } = default!;
-    public double Weight { get; set; }
-    public double Height { get; set; }
-    public string OwnerPhoneNumber { get; set; } = default!;
-    public DateOnly BirthDate { get; set; }
-    public bool IsCastrated { get; set; }
-    public bool IsVaccinated { get; set; }
-    public HelpStatusPet HelpStatus { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public AssistanceDetails AssistanceDetails { get; set; } = default!;
+    public Guid Id { get; private set; }
+    public string Name { get; private set; } = default!;
+    public string AnimalType { get; private set; }
+    public string GeneralDescription { get; private set; } = default!;
+    public string Breed { get; private set; } = default!;
+    public string Color { get; private set; } = default!;
+    public string HealthInformation { get; private set; } = default!;
+    public string Address { get; private set; } = default!;
+    public double Weight { get; private set; }
+    public double Height { get; private set; }
+    public string OwnerPhoneNumber { get; private set; } = default!;
+    public DateOnly BirthDate { get; private set; }
+    public bool IsCastrated { get; private set; }
+    public bool IsVaccinated { get; private set; }
+    public HelpStatusPet HelpStatus { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public List<AssistanceDetails> AssistanceDetails { get; private set; } = new();
 }
