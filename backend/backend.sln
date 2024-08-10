@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFinder.API", "src\PetFinder.API\PetFinder.API.csproj", "{0E370524-93E3-4585-88CF-C88738EC6B0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFinder.Infrastructure", "src\PetFinder.Infrastructure\PetFinder.Infrastructure.csproj", "{683EBF55-2D80-4937-BA11-D2AA89E6FD93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFinder.Domain", "src\PetFinder.Domain\PetFinder.Domain.csproj", "{F0AE19E9-98CB-470E-B980-8D493CA8509A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFinder.Application", "src\PetFinder.Application\PetFinder.Application.csproj", "{AF2A720F-CAA3-44E7-9EB6-B2713EE97A16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E370524-93E3-4585-88CF-C88738EC6B0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E370524-93E3-4585-88CF-C88738EC6B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E370524-93E3-4585-88CF-C88738EC6B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E370524-93E3-4585-88CF-C88738EC6B0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{683EBF55-2D80-4937-BA11-D2AA89E6FD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{683EBF55-2D80-4937-BA11-D2AA89E6FD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{683EBF55-2D80-4937-BA11-D2AA89E6FD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{683EBF55-2D80-4937-BA11-D2AA89E6FD93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0AE19E9-98CB-470E-B980-8D493CA8509A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0AE19E9-98CB-470E-B980-8D493CA8509A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0AE19E9-98CB-470E-B980-8D493CA8509A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0AE19E9-98CB-470E-B980-8D493CA8509A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF2A720F-CAA3-44E7-9EB6-B2713EE97A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF2A720F-CAA3-44E7-9EB6-B2713EE97A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF2A720F-CAA3-44E7-9EB6-B2713EE97A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF2A720F-CAA3-44E7-9EB6-B2713EE97A16}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
