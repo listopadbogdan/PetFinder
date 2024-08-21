@@ -6,7 +6,7 @@ public class Pet
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; } = default!;
-    public string AnimalType { get; private set; }
+    public string AnimalType { get; private set; } = default!;
     public string GeneralDescription { get; private set; } = default!;
     public string Breed { get; private set; } = default!;
     public string Color { get; private set; } = default!;
@@ -21,4 +21,5 @@ public class Pet
     public HelpStatusPet HelpStatus { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public List<AssistanceDetails> AssistanceDetails { get; private set; } = new();
+    public List<PetPhoto> Photos { get; private set; } = new();
 }
