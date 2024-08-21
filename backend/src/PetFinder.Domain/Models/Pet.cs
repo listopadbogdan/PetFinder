@@ -4,6 +4,7 @@ namespace PetFinder.Domain.Models;
 
 public class Pet
 {
+    private Pet() { }
     public Guid Id { get; private set; }
     public string Name { get; private set; } = default!;
     public string AnimalType { get; private set; } = default!;
@@ -22,4 +23,5 @@ public class Pet
     public DateTime CreatedAt { get; private set; }
     public List<AssistanceDetails> AssistanceDetails { get; private set; } = new();
     public List<PetPhoto> Photos { get; private set; } = new();
+    public Volunteer Volunteer { get; private set; } = default!;
 }
