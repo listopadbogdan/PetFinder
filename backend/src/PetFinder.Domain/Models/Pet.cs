@@ -23,5 +23,4 @@ public class Pet
     public DateTime CreatedAt { get; private set; }
     public List<AssistanceDetails> AssistanceDetails { get; private set; } = new();
     public List<PetPhoto> Photos { get; private set; } = new();
-    public Volunteer Volunteer { get; private set; } = default!;
 }

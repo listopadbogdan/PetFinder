@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFinder.Domain.Constants;
@@ -30,10 +31,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
             .IsRequired();
 
-        builder.HasMany(v => v.Pets)
-            .WithOne(p => p.Volunteer)
-            .IsRequired();
-
         builder.OwnsMany(v => v.SocialNetworks)
             .ToJson();
 
@@ -42,11 +39,12 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.HasIndex(v => v.PhoneNumber)
             .IsUnique();
-        
-        builder.ToTable(t =>
-        {
-            t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0");
-        });
 
+        builder.ToTable(
+            name: Constants.Volunteer.TableName,
+            buildAction: t =>
+            {
+                t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0");
+            });
     }
 }

@@ -12,11 +12,13 @@ public static class Constants
         public const int MaxHealthInformationLength = 256;
         public const int MaxAddressLength = 256;
         public const int MaxOwnerPhoneNumberLength = 16;
+        public const string TableName = "pets";
     }
     
     public static class PetPhoto
     {
         public const int MaxPathLength = 256;
+        public const string TableName = "pet_photos";
     }
     
     public static class Volunteer
@@ -26,5 +28,6 @@ public static class Constants
         public const int MaxLastNameLength = 32;
         public const int MaxPhoneNumberLength = 16;
         public const int MaxDescriptionLength = 256;
+        public const string TableName = "volunteers";
     }
 }

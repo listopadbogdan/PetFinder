@@ -17,5 +17,9 @@ public class PetPhotoConfiguration : IEntityTypeConfiguration<PetPhoto>
 
         builder.Property(p => p.IsMain)
             .IsRequired();
+
+        builder.ToTable(
+            name: Constants.PetPhoto.TableName
+        );
     }
 }
