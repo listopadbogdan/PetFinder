@@ -1,4 +1,4 @@
-namespace PetFinder.Domain.Models;
+namespace PetFinder.Domain.Volunteer;
 
 public class AssistanceDetails
 {
