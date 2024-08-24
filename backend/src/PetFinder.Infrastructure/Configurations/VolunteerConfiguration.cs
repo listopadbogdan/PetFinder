@@ -1,8 +1,7 @@
-using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFinder.Domain.Shared.Constants;
-using PetFinder.Domain.Volunteer;
+using PetFinder.Domain.Models;
+using PetFinder.Domain.Shared;
 
 namespace PetFinder.Infrastructure.Configurations;
 

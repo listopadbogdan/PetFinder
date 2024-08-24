@@ -1,6 +1,6 @@
-﻿using PetFinder.Domain.Abstract;
+﻿using PetFinder.Domain.Shared;
 
-namespace PetFinder.Domain.Pet;
+namespace PetFinder.Domain.Models;
 
 public class Pet : Entity<PetId>
 {
@@ -20,5 +20,5 @@ public class Pet : Entity<PetId>
     public bool IsVaccinated { get; private set; }
     public HelpStatusPet HelpStatus { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    public List<PetPhoto.PetPhoto> Photos { get; private set; } = new();
+    public List<PetPhoto> Photos { get; private set; } = new();
 }

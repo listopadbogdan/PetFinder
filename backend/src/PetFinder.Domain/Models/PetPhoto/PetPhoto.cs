@@ -1,6 +1,6 @@
-using PetFinder.Domain.Abstract;
+using PetFinder.Domain.Shared;
 
-namespace PetFinder.Domain.PetPhoto;
+namespace PetFinder.Domain.Models;
 
 public class PetPhoto : Entity<PetPhotoId>
 {

@@ -1,4 +1,4 @@
-namespace PetFinder.Domain.Shared.Constants;
+namespace PetFinder.Domain.Shared;
 
 public static class Constants
 {

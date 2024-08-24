@@ -1,4 +1,4 @@
-namespace PetFinder.Domain.Abstract;
+namespace PetFinder.Domain.Shared;
 
 public abstract class Entity<T>(T id) 
 {

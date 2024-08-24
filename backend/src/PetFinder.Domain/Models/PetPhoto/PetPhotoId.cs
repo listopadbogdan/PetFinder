@@ -1,4 +1,4 @@
-namespace PetFinder.Domain.PetPhoto;
+namespace PetFinder.Domain.Models;
 
 public class PetPhotoId
 {
