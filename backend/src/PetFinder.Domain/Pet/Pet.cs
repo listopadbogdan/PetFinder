@@ -1,11 +1,10 @@
-﻿using PetFinder.Domain.Enums;
+﻿using PetFinder.Domain.Abstract;
 
-namespace PetFinder.Domain.Models;
+namespace PetFinder.Domain.Pet;
 
-public class Pet
+public class Pet : Entity<PetId>
 {
-    private Pet() { }
-    public Guid Id { get; private set; }
+    private Pet(PetId id) : base(id) { }
     public string Name { get; private set; } = default!;
     public string AnimalType { get; private set; } = default!;
     public string GeneralDescription { get; private set; } = default!;
@@ -21,6 +20,5 @@ public class Pet
     public bool IsVaccinated { get; private set; }
     public HelpStatusPet HelpStatus { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    public List<AssistanceDetails> AssistanceDetails { get; private set; } = new();
-    public List<PetPhoto> Photos { get; private set; } = new();
+    public List<PetPhoto.PetPhoto> Photos { get; private set; } = new();
 }

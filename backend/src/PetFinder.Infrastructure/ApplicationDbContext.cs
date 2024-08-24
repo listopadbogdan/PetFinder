@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PetFinder.Domain.Models;
+using PetFinder.Domain.Volunteer;
 
 namespace PetFinder.Infrastructure;
 

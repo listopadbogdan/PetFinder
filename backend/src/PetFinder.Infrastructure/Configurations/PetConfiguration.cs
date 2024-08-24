@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFinder.Domain.Constants;
-using PetFinder.Domain.Models;
+using PetFinder.Domain.Pet;
+using PetFinder.Domain.Shared.Constants;
 
 namespace PetFinder.Infrastructure.Configurations;
 
@@ -65,10 +65,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.HasMany(p => p.Photos)
             .WithOne();
-
-        builder.OwnsMany(p => p.AssistanceDetails)
-            .ToJson();
-
+        
         builder.ToTable(
             name: Constants.Pet.TableName,
             buildAction: t =>
