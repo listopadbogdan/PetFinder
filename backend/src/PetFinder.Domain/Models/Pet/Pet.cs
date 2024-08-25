@@ -1,17 +1,18 @@
-﻿using PetFinder.Domain.Shared;
+﻿namespace PetFinder.Domain.Models;
 
-namespace PetFinder.Domain.Models;
-
-public class Pet : Entity<PetId>
+public class Pet : Shared.Entity<PetId>
 {
-    private Pet(PetId id) : base(id) { }
+    private Pet(PetId id) : base(id)
+    {
+    }
+
     public string Name { get; private set; } = default!;
     public string AnimalType { get; private set; } = default!;
     public string GeneralDescription { get; private set; } = default!;
     public string Breed { get; private set; } = default!;
     public string Color { get; private set; } = default!;
     public string HealthInformation { get; private set; } = default!;
-    public string Address { get; private set; } = default!;
+    public Address Address { get; private set; } = default!;
     public double Weight { get; private set; }
     public double Height { get; private set; }
     public string OwnerPhoneNumber { get; private set; } = default!;
