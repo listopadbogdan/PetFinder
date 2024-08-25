@@ -10,6 +10,6 @@ public class PetId
     }
 
     public static PetId New() => new(Guid.NewGuid());
-    
+
     public static PetId Create(Guid value) => new(value);
 }

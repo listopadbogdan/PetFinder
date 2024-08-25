@@ -1,6 +1,6 @@
 namespace PetFinder.Domain.Models;
 
-public class VolunteerId 
+public class VolunteerId
 {
     public Guid Value { get; }
 
@@ -10,6 +10,6 @@ public class VolunteerId
     }
 
     public static VolunteerId New() => new(Guid.NewGuid());
-    
+
     public static VolunteerId Create(Guid value) => new(value);
 }
