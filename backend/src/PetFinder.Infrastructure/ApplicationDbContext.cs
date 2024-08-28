@@ -10,11 +10,13 @@ public class ApplicationDbContext : DbContext
     private readonly IConfiguration _configuration = null!;
 
     private ApplicationDbContext() { }
+    
     public ApplicationDbContext(IConfiguration configuration)
     {
         _configuration = configuration;
     }
-    public DbSet<Volunteer> Volunteers { get; } = null!;
+
+    public DbSet<Volunteer> Volunteers => Set<Volunteer>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
