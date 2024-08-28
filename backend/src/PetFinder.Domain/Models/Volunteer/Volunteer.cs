@@ -2,8 +2,12 @@ using PetFinder.Domain.Shared;
 
 namespace PetFinder.Domain.Models;
 
-public class Volunteer : Shared.Entity<VolunteerId>
+public class Volunteer : Entity<VolunteerId>
 {
+    private readonly List<AssistanceDetails> _assistanceDetails = new();
+    private readonly List<Pet> _pets = new();
+    private readonly List<SocialNetworks> _socialNetworks = new();
+
     private Volunteer(VolunteerId id)
         : base(id)
     {
@@ -14,9 +18,9 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int ExperienceYears { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; } = default!;
     public string Description { get; private set; } = default!;
-    public List<SocialNetworks> SocialNetworks { get; private set; } = new();
-    public List<AssistanceDetails> AssistanceDetails { get; private set; } = new();
-    public List<Pet> Pets { get; private set; } = new();
+    public IReadOnlyList<SocialNetworks> SocialNetworks => _socialNetworks;
+    public IReadOnlyList<AssistanceDetails> AssistanceDetails => _assistanceDetails;
+    public IReadOnlyList<Pet> Pets => _pets;
 
     public int PetsFoundHomeCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.FoundHome);
     public int PetsLookingForHomeCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.LookingForHome);

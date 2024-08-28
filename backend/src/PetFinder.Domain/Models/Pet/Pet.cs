@@ -2,6 +2,8 @@
 
 public class Pet : Shared.Entity<PetId>
 {
+    private readonly List<PetPhoto> _photos = new();
+
     private Pet(PetId id) : base(id)
     {
     }
@@ -21,5 +23,5 @@ public class Pet : Shared.Entity<PetId>
     public bool IsVaccinated { get; private set; }
     public HelpStatusPet HelpStatus { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    public List<PetPhoto> Photos { get; private set; } = new();
+    public IReadOnlyList<PetPhoto> Photos => _photos;
 }
