@@ -1,6 +1,8 @@
-﻿namespace PetFinder.Domain.Models;
+﻿using PetFinder.Domain.Shared;
 
-public class Pet : Shared.Entity<PetId>
+namespace PetFinder.Domain.Models;
+
+public class Pet : Entity<PetId>
 {
     private readonly List<PetPhoto> _photos = new();
 
