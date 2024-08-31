@@ -33,7 +33,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ComplexProperty(v => v.PhoneNumber, pnb =>
         {
             pnb.Property(p => p.Value)
-                .HasMaxLength(Constants.Volunteer.MaxPhoneNumberLength)
+                .HasMaxLength(Constants.PhoneNumber.MaxLength)
                 .IsRequired();
         });
 
@@ -49,9 +49,10 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsMany(v => v.AssistanceDetails)
             .ToJson();
-
-        builder.HasIndex(v => v.PhoneNumber)
-            .IsUnique();
+        
+        // builder.HasIndex(Constants.PhoneNumber.ColumnName)
+        //     .HasDatabaseName("UQ_Volunteer_phone_number")
+        //     .IsUnique(); 
 
         builder.ToTable(
             Constants.Volunteer.TableName,

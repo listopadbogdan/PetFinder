@@ -17,9 +17,14 @@ public static class Constants
         public const int MaxFirstNameLength = 32;
         public const int MaxMiddleNameLength = 32;
         public const int MaxLastNameLength = 32;
-        public const int MaxPhoneNumberLength = 16;
         public const int MaxDescriptionLength = 256;
         public const string TableName = "volunteers";
+        
+    }
+
+    public static class PhoneNumber
+    {
+        public const int MaxLength = 16;
     }
 
     public static class Pet
@@ -30,7 +35,6 @@ public static class Constants
         public const int MaxBreedLength = 32;
         public const int MaxColorLength = 32;
         public const int MaxHealthInformationLength = 256;
-        public const int MaxAddressLength = 256;
         public const int MaxOwnerPhoneNumberLength = 16;
         public const string TableName = "pets";
     }
