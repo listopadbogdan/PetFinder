@@ -9,9 +9,9 @@ public record PersonName
     {
     }
 
-    public string FirstName { get; private init; } = default!;
-    public string? MiddleName { get; private init; }
-    public string LastName { get; private init; } = default!;
+    public string FirstName { get; private set; } = default!;
+    public string? MiddleName { get; private set; }
+    public string LastName { get; private set; } = default!;
 
     public static Result<PersonName> Create(string firstName, string? middleName, string lastName)
     {

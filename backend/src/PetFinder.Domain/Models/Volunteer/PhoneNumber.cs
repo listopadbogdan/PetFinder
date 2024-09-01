@@ -10,7 +10,7 @@ public record PhoneNumber
     {
     }
 
-    public string Value { get; private init; } = default!;
+    public string Value { get; private set; } = default!;
 
     public Result<PhoneNumber> Create(string value)
     {

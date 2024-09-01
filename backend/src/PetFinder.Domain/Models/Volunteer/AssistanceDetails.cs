@@ -9,8 +9,8 @@ public record AssistanceDetails
     {
     }
 
-    public string Name { get; private init; } = default!;
-    public string Description { get; private init; } = default!;
+    public string Name { get; private set; } = default!;
+    public string Description { get; private set; } = default!;
 
     public Result<AssistanceDetails> Create(string name, string description)
     {

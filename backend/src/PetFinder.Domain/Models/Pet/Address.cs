@@ -9,11 +9,11 @@ public record Address
     {
     }
 
-    public string Country { get; private init; } = default!;
-    public string City { get; private init; } = default!;
-    public string Street { get; private init; } = default!;
-    public string House { get; private init; } = default!;
-    public string? Description { get; private init; }
+    public string Country { get; private set; } = default!;
+    public string City { get; private set; } = default!;
+    public string Street { get; private set; } = default!;
+    public string House { get; private set; } = default!;
+    public string? Description { get; private set; }
 
     public static Result<Address> Create(string country, string city, string street, string house,
         string? description)
