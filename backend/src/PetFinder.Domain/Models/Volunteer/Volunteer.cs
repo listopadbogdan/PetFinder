@@ -14,7 +14,6 @@ public class Volunteer : Entity<VolunteerId>
     }
 
     public PersonName PersonName { get; private set; } = default!;
-
     public int ExperienceYears { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; } = default!;
     public string Description { get; private set; } = default!;
