@@ -23,6 +23,7 @@ public class Pet : Entity<PetId>
     public DateOnly BirthDate { get; private set; }
     public bool IsCastrated { get; private set; }
     public bool IsVaccinated { get; private set; }
+    
     public HelpStatusPet HelpStatus { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public IReadOnlyList<PetPhoto> Photos => _photos;

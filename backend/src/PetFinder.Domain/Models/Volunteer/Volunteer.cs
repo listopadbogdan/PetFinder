@@ -24,7 +24,5 @@ public class Volunteer : Entity<VolunteerId>
 
     public int PetsFoundHomeCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.FoundHome);
     public int PetsLookingForHomeCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.LookingForHome);
-
-    public int PetsOnTreatmentCount =>
-        throw new NotImplementedException(); // Pets.Count(p => p.HealthInformation.Contains("На лечении"));
+    public int PetsOnTreatmentCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.OnTreatment);
 }
