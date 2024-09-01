@@ -3,25 +3,25 @@ using PetFinder.Domain.Shared;
 
 namespace PetFinder.Domain.Models;
 
-public record SocialNetworks
+public record SocialNetwork
 {
-    private SocialNetworks()
+    private SocialNetwork()
     {
     }
 
-    public string Name { get; private init; } = default!;
-    public string Url { get; private init; } = default!;
+    public string Name { get; private set; } = default!;
+    public string Url { get; private set; } = default!;
 
-    public Result<SocialNetworks> Create(string name, string url)
+    public Result<SocialNetwork> Create(string name, string url)
     {
         var validationResult = Validate(
             name: name,
             url: url);
 
         if (validationResult.IsFailure)
-            return Result.Failure<SocialNetworks>(validationResult.Error);
+            return Result.Failure<SocialNetwork>(validationResult.Error);
 
-        return Result.Success(new SocialNetworks()
+        return Result.Success(new SocialNetwork()
         {
             Name = name,
             Url = url

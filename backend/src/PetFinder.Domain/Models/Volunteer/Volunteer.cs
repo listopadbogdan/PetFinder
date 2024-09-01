@@ -6,7 +6,7 @@ public class Volunteer : Entity<VolunteerId>
 {
     private readonly List<AssistanceDetails> _assistanceDetails = new();
     private readonly List<Pet> _pets = new();
-    private readonly List<SocialNetworks> _socialNetworks = new();
+    private readonly List<SocialNetwork> _socialNetworks = new();
 
     private Volunteer(VolunteerId id)
         : base(id)
@@ -18,7 +18,7 @@ public class Volunteer : Entity<VolunteerId>
     public int ExperienceYears { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; } = default!;
     public string Description { get; private set; } = default!;
-    public IReadOnlyList<SocialNetworks> SocialNetworks => _socialNetworks;
+    public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
     public IReadOnlyList<AssistanceDetails> AssistanceDetails => _assistanceDetails;
     public IReadOnlyList<Pet> Pets => _pets;
 
