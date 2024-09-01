@@ -1,8 +1,7 @@
-using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFinder.Domain.Shared.Constants;
-using PetFinder.Domain.Volunteer;
+using PetFinder.Domain.Models;
+using PetFinder.Domain.Shared;
 
 namespace PetFinder.Infrastructure.Configurations;
 
@@ -12,23 +11,37 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     {
         builder.HasKey(v => v.Id);
 
-        builder.Property(v => v.FirstName)
-            .HasMaxLength(Constants.Volunteer.MaxFirstNameLength)
-            .IsRequired();
+        builder.Property(v => v.Id)
+            .HasConversion(
+                id => id.Value,
+                value => VolunteerId.Create(value));
 
-        builder.Property(v => v.MiddleName)
-            .HasMaxLength(Constants.Volunteer.MaxMiddleNameLength);
+        builder.ComplexProperty(v => v.PersonName, vnb =>
+        {
+            vnb.Property(v => v.FirstName)
+                .HasMaxLength(Constants.Volunteer.MaxFirstNameLength)
+                .IsRequired();
 
-        builder.Property(v => v.LastName)
-            .HasMaxLength(Constants.Volunteer.MaxLastNameLength)
-            .IsRequired();
+            vnb.Property(v => v.MiddleName)
+                .HasMaxLength(Constants.Volunteer.MaxMiddleNameLength);
 
-        builder.Property(v => v.PhoneNumber)
-            .HasMaxLength(Constants.Volunteer.MaxPhoneNumberLength)
-            .IsRequired();
+            vnb.Property(v => v.LastName)
+                .HasMaxLength(Constants.Volunteer.MaxLastNameLength)
+                .IsRequired();
+        });
+
+        builder.ComplexProperty(v => v.PhoneNumber, pnb =>
+        {
+            pnb.Property(p => p.Value)
+                .HasMaxLength(Constants.PhoneNumber.MaxLength)
+                .IsRequired();
+        });
 
         builder.Property(v => v.Description)
             .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
+            .IsRequired();
+
+        builder.Property(v => v.ExperienceYears)
             .IsRequired();
 
         builder.OwnsMany(v => v.SocialNetworks)
@@ -36,15 +49,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsMany(v => v.AssistanceDetails)
             .ToJson();
-
-        builder.HasIndex(v => v.PhoneNumber)
-            .IsUnique();
+        
+        // builder.HasIndex(Constants.PhoneNumber.ColumnName)
+        //     .HasDatabaseName("UQ_Volunteer_phone_number")
+        //     .IsUnique(); 
 
         builder.ToTable(
-            name: Constants.Volunteer.TableName,
-            buildAction: t =>
-            {
-                t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0");
-            });
+            Constants.Volunteer.TableName,
+            t => { t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0"); });
     }
 }

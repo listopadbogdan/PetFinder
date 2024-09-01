@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PetFinder.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,12 +16,12 @@ namespace PetFinder.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    first_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    middle_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    last_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     experience_years = table.Column<int>(type: "integer", nullable: false),
-                    phone_number = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    person_name_first_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    person_name_last_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    person_name_middle_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
+                    phone_number = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     assistance_details = table.Column<string>(type: "jsonb", nullable: true),
                     social_networks = table.Column<string>(type: "jsonb", nullable: true)
                 },
@@ -32,7 +32,7 @@ namespace PetFinder.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "pet",
+                name: "pets",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -42,7 +42,6 @@ namespace PetFinder.Infrastructure.Migrations
                     breed = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     color = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     health_information = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    address = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     weight = table.Column<double>(type: "double precision", nullable: false),
                     height = table.Column<double>(type: "double precision", nullable: false),
                     owner_phone_number = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
@@ -51,24 +50,27 @@ namespace PetFinder.Infrastructure.Migrations
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
                     help_status = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    assistance_details = table.Column<string>(type: "jsonb", nullable: true)
+                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    address_city = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    address_country = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    address_description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    address_house = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
+                    address_street = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pet", x => x.id);
+                    table.PrimaryKey("pk_pets", x => x.id);
                     table.CheckConstraint("CK_Pet_height", "\"height\" > 0");
                     table.CheckConstraint("CK_Pet_weight", "\"weight\" > 0");
                     table.ForeignKey(
-                        name: "fk_pet_volunteers_volunteer_id",
+                        name: "fk_pets_volunteers_volunteer_id",
                         column: x => x.volunteer_id,
                         principalTable: "volunteers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "pet_photo",
+                name: "pet_photos",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -78,34 +80,33 @@ namespace PetFinder.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pet_photo", x => x.id);
+                    table.PrimaryKey("pk_pet_photos", x => x.id);
                     table.ForeignKey(
-                        name: "fk_pet_photo_pet_pet_id",
+                        name: "fk_pet_photos_pets_pet_id",
                         column: x => x.pet_id,
-                        principalTable: "pet",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "pets",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_pet_volunteer_id",
-                table: "pet",
-                column: "volunteer_id");
+                name: "ix_pet_photos_pet_id",
+                table: "pet_photos",
+                column: "pet_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_pet_photo_pet_id",
-                table: "pet_photo",
-                column: "pet_id");
+                name: "ix_pets_volunteer_id",
+                table: "pets",
+                column: "volunteer_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "pet_photo");
+                name: "pet_photos");
 
             migrationBuilder.DropTable(
-                name: "pet");
+                name: "pets");
 
             migrationBuilder.DropTable(
                 name: "volunteers");

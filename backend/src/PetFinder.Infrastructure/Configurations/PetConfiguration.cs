@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFinder.Domain.Pet;
-using PetFinder.Domain.Shared.Constants;
+using PetFinder.Domain.Models;
+using PetFinder.Domain.Shared;
 
 namespace PetFinder.Infrastructure.Configurations;
 
@@ -12,6 +13,11 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.ToTable("pets");
 
         builder.HasKey(p => p.Id);
+
+        builder.Property(p => p.Id)
+            .HasConversion(
+                id => id.Value,
+                value => PetId.Create(value));
 
         builder.Property(p => p.Name)
             .HasMaxLength(Constants.Pet.MaxNameLength)
@@ -37,9 +43,27 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasMaxLength(Constants.Pet.MaxHealthInformationLength)
             .IsRequired();
 
-        builder.Property(p => p.Address)
-            .HasMaxLength(Constants.Pet.MaxAddressLength)
-            .IsRequired();
+        builder.ComplexProperty(p => p.Address, pab =>
+        {
+            pab.Property(a => a.Country)
+                .HasMaxLength(Constants.Address.MaxCountryLength)
+                .IsRequired();
+
+            pab.Property(a => a.City)
+                .HasMaxLength(Constants.Address.MaxCityLength)
+                .IsRequired();
+
+            pab.Property(a => a.Street)
+                .HasMaxLength(Constants.Address.MaxStreetLength)
+                .IsRequired();
+
+            pab.Property(a => a.House)
+                .HasMaxLength(Constants.Address.MaxHouseLength)
+                .IsRequired();
+
+            pab.Property(a => a.Description)
+                .HasMaxLength(Constants.Address.MaxDescriptionLength);
+        });
 
         builder.Property(p => p.Weight)
             .IsRequired();

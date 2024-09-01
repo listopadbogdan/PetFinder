@@ -1,4 +1,4 @@
-namespace PetFinder.Domain.PetPhoto;
+namespace PetFinder.Domain.Models;
 
 public class PetPhotoId
 {
@@ -10,6 +10,6 @@ public class PetPhotoId
     }
 
     public static PetPhotoId New() => new(Guid.NewGuid());
-    
+
     public static PetPhotoId Create(Guid value) => new(value);
 }

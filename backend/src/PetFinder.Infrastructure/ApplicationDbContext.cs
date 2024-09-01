@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PetFinder.Domain.Volunteer;
+using PetFinder.Domain.Models;
 
 namespace PetFinder.Infrastructure;
 
@@ -10,11 +10,13 @@ public class ApplicationDbContext : DbContext
     private readonly IConfiguration _configuration = null!;
 
     private ApplicationDbContext() { }
+    
     public ApplicationDbContext(IConfiguration configuration)
     {
         _configuration = configuration;
     }
-    public DbSet<Volunteer> Volunteers { get; } = null!;
+
+    public DbSet<Volunteer> Volunteers => Set<Volunteer>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

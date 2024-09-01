@@ -1,8 +1,8 @@
-namespace PetFinder.Domain.Pet;
+namespace PetFinder.Domain.Models;
 
 public enum HelpStatusPet
 {
-    NeedsHelp,
+    OnTreatment,
     LookingForHome,
     FoundHome,
 }
