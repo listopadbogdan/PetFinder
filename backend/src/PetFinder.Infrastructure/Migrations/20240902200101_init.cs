@@ -12,6 +12,18 @@ namespace PetFinder.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "species",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    title = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_species", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "volunteers",
                 columns: table => new
                 {
@@ -21,7 +33,7 @@ namespace PetFinder.Infrastructure.Migrations
                     person_name_first_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     person_name_last_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     person_name_middle_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    phone_number = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
+                    phone_number_value = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     assistance_details = table.Column<string>(type: "jsonb", nullable: true),
                     social_networks = table.Column<string>(type: "jsonb", nullable: true)
                 },
@@ -29,6 +41,26 @@ namespace PetFinder.Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_volunteers", x => x.id);
                     table.CheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "breed",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    description = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    title = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    species_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_breed", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_breed_species_species_id",
+                        column: x => x.species_id,
+                        principalTable: "species",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,7 +87,9 @@ namespace PetFinder.Infrastructure.Migrations
                     address_country = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     address_description = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     address_house = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
-                    address_street = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false)
+                    address_street = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    species_breed_object_breed_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    species_breed_object_species_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,6 +123,11 @@ namespace PetFinder.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_breed_species_id",
+                table: "breed",
+                column: "species_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_pet_photos_pet_id",
                 table: "pet_photos",
                 column: "pet_id");
@@ -103,7 +142,13 @@ namespace PetFinder.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "breed");
+
+            migrationBuilder.DropTable(
                 name: "pet_photos");
+
+            migrationBuilder.DropTable(
+                name: "species");
 
             migrationBuilder.DropTable(
                 name: "pets");

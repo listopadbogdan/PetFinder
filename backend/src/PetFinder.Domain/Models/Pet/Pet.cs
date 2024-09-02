@@ -10,6 +10,7 @@ public class Pet : Entity<PetId>
     {
     }
 
+    public SpeciesBreedObject SpeciesBreedObject { get; private set; } = default!;
     public string Name { get; private set; } = default!;
     public string AnimalType { get; private set; } = default!;
     public string GeneralDescription { get; private set; } = default!;
@@ -23,7 +24,7 @@ public class Pet : Entity<PetId>
     public DateOnly BirthDate { get; private set; }
     public bool IsCastrated { get; private set; }
     public bool IsVaccinated { get; private set; }
-    
+
     public HelpStatusPet HelpStatus { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public IReadOnlyList<PetPhoto> Photos => _photos;

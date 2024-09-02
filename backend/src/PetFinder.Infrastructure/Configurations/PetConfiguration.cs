@@ -64,6 +64,21 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             pab.Property(a => a.Description)
                 .HasMaxLength(Constants.Address.MaxDescriptionLength);
         });
+        
+        builder.ComplexProperty(p => p.SpeciesBreedObject, sbob =>
+        {
+            sbob.Property(sbo => sbo.SpeciesId)
+                .HasConversion(
+                    speciesId => speciesId.Value,
+                    value => SpeciesId.Create(value))
+                .IsRequired();
+
+            sbob.Property(sbo => sbo.BreedId)
+                .HasConversion(
+                    breedId => breedId.Value,
+                    value => BreedId.Create(value))
+                .IsRequired();
+        });
 
         builder.Property(p => p.Weight)
             .IsRequired();
