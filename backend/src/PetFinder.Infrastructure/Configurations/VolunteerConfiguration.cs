@@ -50,6 +50,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.OwnsMany(v => v.AssistanceDetails)
             .ToJson();
         
+        //TODO - resolve problem with UQ index for Volunteer.PhoneNumber
         // builder.HasIndex(Constants.PhoneNumber.ColumnName)
         //     .HasDatabaseName("UQ_Volunteer_phone_number")
         //     .IsUnique(); 
