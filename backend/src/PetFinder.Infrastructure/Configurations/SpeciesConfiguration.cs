@@ -9,6 +9,8 @@ public class SpeciesConfiguration: IEntityTypeConfiguration<Species>
 {
     public void Configure(EntityTypeBuilder<Species> builder)
     {
+        builder.ToTable(Constants.Species.TableName);
+        
         builder.HasKey(s => s.Id);
 
         builder.Property(s => s.Id)

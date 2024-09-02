@@ -9,6 +9,8 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
 {
     public void Configure(EntityTypeBuilder<Breed> builder)
     {
+        builder.ToTable(Constants.Breed.TableName);
+        
         builder.HasKey(b => b.Id);
 
         builder.Property(b => b.Id)
