@@ -11,13 +11,13 @@ public class VolunteerController(ApplicationDbContext context) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromServices] CreateVolunteerHandler handler,
-        [FromBody] CreateVolunteerRequest createVolunteerRequest)
+        [FromBody] CreateVolunteerRequest createVolunteerRequest,
+        CancellationToken cancellationToken = default)
     {
-        var result = await handler.Handle(createVolunteerRequest);
+        var result = await handler.Handle(createVolunteerRequest, cancellationToken);
 
-        if (result.IsFailure)
-            return BadRequest(result.Error);
-
-        return Ok(result.Value);
+        return result.IsFailure
+            ? BadRequest(result.Error)
+            : Ok(result.Value);
     }
 }

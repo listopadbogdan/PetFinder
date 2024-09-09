@@ -18,7 +18,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         PhoneNumber phoneNumber,
         List<SocialNetwork> socialNetworks,
         List<AssistanceDetails> assistanceDetails,
-        string email,
+        Email email,
         int experienceYears,
         string description) : base(id)
     {
@@ -26,7 +26,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         PhoneNumber = phoneNumber;
         ExperienceYears = experienceYears;
         Description = description;
-        
+        Email = email;
         _socialNetworks = socialNetworks;
         _assistanceDetails = assistanceDetails;
         _socialNetworks = [];
@@ -52,7 +52,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         PhoneNumber phoneNumber,
         IEnumerable<SocialNetwork>? socialNetworks,
         IEnumerable<AssistanceDetails>? assistanceDetails,
-        string email,
+        Email email,
         int experienceYears,
         string description)
     {

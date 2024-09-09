@@ -7,7 +7,7 @@ public class CreateVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
 
-    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository) 
+    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
         => _volunteerRepository = volunteerRepository;
 
     public async Task<Result<Guid, string>> Handle(
@@ -17,16 +17,16 @@ public class CreateVolunteerHandler
         var emailResult = Email.Create(request.Email);
         if (emailResult.IsFailure)
             return emailResult.Error;
-        
+
         if ((await _volunteerRepository.GetByEmail(emailResult.Value, cancellationToken)).IsFailure)
             return $"Email {emailResult.Value} is exists";
-        
+
         var phoneNumberResult = PhoneNumber.Create(request.PhoneNumber);
         if (phoneNumberResult.IsFailure)
             return phoneNumberResult.Error;
 
         if ((await _volunteerRepository.GetByPhoneNumber(phoneNumberResult.Value, cancellationToken)).IsFailure)
-            return  $"PhoneNumber {phoneNumberResult.Value} is exists";
+            return $"PhoneNumber {phoneNumberResult.Value} is exists";
 
         var personNameResult = PersonName.Create(
             firstName: request.PersonNameDto.FirstName,
@@ -52,20 +52,21 @@ public class CreateVolunteerHandler
 
         var volunteerId = VolunteerId.New();
 
-        var volunteer = PetFinder.Domain.Models.Volunteer.Create(
+        var createVolunteerResult = Volunteer.Create(
             id: volunteerId,
             personName: personNameResult.Value,
             phoneNumber: phoneNumberResult.Value,
+            email: emailResult.Value,
             socialNetworks: socialNetworks.UnwrapFromResultToValue(),
             assistanceDetails: assistanceDetails.UnwrapFromResultToValue(),
-            email: request.Email,
             experienceYears: request.ExperienceYears,
             description: request.Description);
-        
-        if (volunteer.IsFailure)
-            return volunteer.Error;
 
-        return volunteer.Value.Id.Value;
+        if (createVolunteerResult.IsFailure)
+            return createVolunteerResult.Error;
+
+        await _volunteerRepository.Add(createVolunteerResult.Value, cancellationToken);
+        return volunteerId.Value;
     }
 }
 
