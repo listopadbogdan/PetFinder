@@ -37,7 +37,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int ExperienceYears { get; private set; }
     public string Description { get; private set; } = default!;
 
-    public string Email { get; private set; } = default!;
+    public Email Email { get; private set; } = default!;
     public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
     public IReadOnlyList<AssistanceDetails> AssistanceDetails => _assistanceDetails;
     public IReadOnlyList<Pet> Pets => _pets;

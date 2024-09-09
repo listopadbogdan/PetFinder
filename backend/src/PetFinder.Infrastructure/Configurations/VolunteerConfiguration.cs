@@ -37,6 +37,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .IsRequired();
         });
 
+        builder.ComplexProperty(v => v.Email, pnb =>
+        {
+            pnb.Property(p => p.Value)
+                .HasMaxLength(Constants.Email.MaxLength)
+                .IsRequired();
+        });
+
         builder.Property(v => v.Description)
             .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
             .IsRequired();
