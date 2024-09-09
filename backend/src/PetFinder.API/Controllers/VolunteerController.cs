@@ -1,21 +1,23 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using PetFinder.Application.Features;
 using PetFinder.Infrastructure;
 
 namespace PetFinder.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class VolunteerController
+public class VolunteerController(ApplicationDbContext context) : ControllerBase
 {
-    public VolunteerController(ApplicationDbContext context )
+    [HttpPost]
+    public async Task<IActionResult> Create(
+        [FromServices] CreateVolunteerHandler handler,
+        [FromBody] CreateVolunteerRequest createVolunteerRequest)
     {
-        
+        var result = await handler.Handle(createVolunteerRequest);
+
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+
+        return Ok(result.Value);
     }
-    [HttpGet]
-    public IActionResult Get()
-    {
-        
-    } 
 }
