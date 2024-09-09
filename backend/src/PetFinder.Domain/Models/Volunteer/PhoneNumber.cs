@@ -12,7 +12,7 @@ public record PhoneNumber
 
     public string Value { get; private set; } = default!;
 
-    public Result<PhoneNumber> Create(string value)
+    public static Result<PhoneNumber> Create(string value)
     {
         var validationResult = Validate(
             value: value);
@@ -29,9 +29,9 @@ public record PhoneNumber
     private static Result Validate(string value)
     {
         if (string.IsNullOrWhiteSpace(value) || !ValidationRegex.IsMatch(value))
-            return ValueValidationFailureResult;
+            return Results.ValueIsNotMatchRegexPatternValidationFailureResult(nameof(value), ValidationRegexPattern);
 
-        return Constants.ValueObject.SuccessValidationResult;
+        return Results.Success;
     }
 
     private static readonly string ValidationRegexPattern = @"(^\+\d{1,3}\d{10}$|^$)";
@@ -39,7 +39,4 @@ public record PhoneNumber
     private static readonly Regex ValidationRegex = new Regex(
         pattern: ValidationRegexPattern,
         options: RegexOptions.Singleline | RegexOptions.Compiled);
-
-    private static readonly Result ValueValidationFailureResult = Result.Failure(
-        $"{nameof(Value)} is is not match pattern {ValidationRegexPattern}");
 }

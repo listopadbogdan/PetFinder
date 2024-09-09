@@ -56,7 +56,7 @@ public record Address
         if (description?.Length > Constants.Address.MaxDescriptionLength)
             return DescriptionValidationFailureResult;
 
-        return Constants.ValueObject.SuccessValidationResult;
+        return Results.Success;
     }
 
     private static readonly Result DescriptionValidationFailureResult = Result.Failure(
