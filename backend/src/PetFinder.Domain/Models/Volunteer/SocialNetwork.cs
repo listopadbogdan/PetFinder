@@ -9,7 +9,7 @@ public record SocialNetwork
     {
     }
 
-    public string Name { get; private set; } = default!;
+    public string Title { get; private set; } = default!;
     public string Url { get; private set; } = default!;
 
     public Result<SocialNetwork> Create(string name, string url)
@@ -23,7 +23,7 @@ public record SocialNetwork
 
         return Result.Success(new SocialNetwork()
         {
-            Name = name,
+            Title = name,
             Url = url
         });
     }
@@ -41,7 +41,7 @@ public record SocialNetwork
 
     private static readonly Result NameValidationFailureResult = Result.Failure(
         StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Name),
+            valueName: nameof(Title),
             valueMaxLimit: Constants.SocialNetwork.MaxNameLength));
 
     private static readonly Result UrlValidationFailureResult = Result.Failure(

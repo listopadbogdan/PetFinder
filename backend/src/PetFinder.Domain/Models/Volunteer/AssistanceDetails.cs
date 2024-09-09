@@ -9,7 +9,7 @@ public record AssistanceDetails
     {
     }
 
-    public string Name { get; private set; } = default!;
+    public string Title { get; private set; } = default!;
     public string Description { get; private set; } = default!;
 
     public Result<AssistanceDetails> Create(string name, string description)
@@ -24,7 +24,7 @@ public record AssistanceDetails
         return Result.Success(new AssistanceDetails()
         {
             Description = description,
-            Name = name
+            Title = name
         });
     }
 
@@ -42,7 +42,7 @@ public record AssistanceDetails
 
     private static readonly Result NameValidationFailureResult = Result.Failure(
         StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Name),
+            valueName: nameof(Title),
             valueMaxLimit: Constants.AssistanceDetail.MaxNameLength));
 
     private static readonly Result DescriptionValidationFailureResult = Result.Failure(

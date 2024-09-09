@@ -18,6 +18,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         PhoneNumber phoneNumber,
         List<SocialNetwork> socialNetworks,
         List<AssistanceDetails> assistanceDetails,
+        string email,
         int experienceYears,
         string description) : base(id)
     {
@@ -32,9 +33,11 @@ public class Volunteer : Shared.Entity<VolunteerId>
     }
 
     public PersonName PersonName { get; private set; } = default!;
-    public int ExperienceYears { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; } = default!;
+    public int ExperienceYears { get; private set; }
     public string Description { get; private set; } = default!;
+
+    public string Email { get; private set; } = default!;
     public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
     public IReadOnlyList<AssistanceDetails> AssistanceDetails => _assistanceDetails;
     public IReadOnlyList<Pet> Pets => _pets;
@@ -49,6 +52,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         PhoneNumber phoneNumber,
         IEnumerable<SocialNetwork>? socialNetworks,
         IEnumerable<AssistanceDetails>? assistanceDetails,
+        string email,
         int experienceYears,
         string description)
     {
@@ -58,6 +62,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
             phoneNumber: phoneNumber,
             socialNetworks: socialNetworks?.ToList() ?? [],
             assistanceDetails: assistanceDetails?.ToList() ?? [],
+            email: email,
             experienceYears: experienceYears,
             description: description
         );
