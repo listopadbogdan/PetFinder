@@ -12,10 +12,10 @@ public record SocialNetwork
     public string Title { get; private set; } = default!;
     public string Url { get; private set; } = default!;
 
-    public Result<SocialNetwork> Create(string name, string url)
+    public static Result<SocialNetwork> Create(string title, string url)
     {
         var validationResult = Validate(
-            name: name,
+            name: title,
             url: url);
 
         if (validationResult.IsFailure)
@@ -23,7 +23,7 @@ public record SocialNetwork
 
         return Result.Success(new SocialNetwork()
         {
-            Title = name,
+            Title = title,
             Url = url
         });
     }
@@ -36,7 +36,7 @@ public record SocialNetwork
         if (string.IsNullOrWhiteSpace(url) || name.Length > Constants.SocialNetwork.MaxUrlLength)
             return UrlValidationFailureResult;
 
-        return Constants.ValueObject.SuccessValidationResult;
+        return Results.Success;
     }
 
     private static readonly Result NameValidationFailureResult = Result.Failure(

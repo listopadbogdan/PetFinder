@@ -12,10 +12,10 @@ public record AssistanceDetails
     public string Title { get; private set; } = default!;
     public string Description { get; private set; } = default!;
 
-    public Result<AssistanceDetails> Create(string name, string description)
+    public static Result<AssistanceDetails> Create(string title, string description)
     {
         var validationResult = Validate(
-            name: name,
+            name: title,
             description: description);
 
         if (validationResult.IsFailure)
@@ -24,11 +24,11 @@ public record AssistanceDetails
         return Result.Success(new AssistanceDetails()
         {
             Description = description,
-            Title = name
+            Title = title
         });
     }
 
-    private Result Validate(string name, string description)
+    private static Result Validate(string name, string description)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.AssistanceDetail.MaxNameLength)
             return NameValidationFailureResult;
@@ -37,7 +37,7 @@ public record AssistanceDetails
             description.Length > Constants.AssistanceDetail.MaxDescriptionLength)
             return DescriptionValidationFailureResult;
 
-        return Constants.ValueObject.SuccessValidationResult;
+        return Results.Success;
     }
 
     private static readonly Result NameValidationFailureResult = Result.Failure(

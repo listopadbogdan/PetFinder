@@ -42,7 +42,7 @@ public record PersonName
         if (string.IsNullOrWhiteSpace(lastName) || lastName.Length > Constants.PersonName.MaxLastNameLength)
             return LastNameValidationFailureResult;
 
-        return Constants.ValueObject.SuccessValidationResult;
+        return Results.Success;
     }
 
     private static readonly Result FirstNameValidationFailureResult = Result.Failure(
