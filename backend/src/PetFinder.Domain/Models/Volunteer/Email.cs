@@ -26,12 +26,12 @@ public record Email
         });
     }
 
-    private static Result Validate(string value)
+    private static Result<bool, Error> Validate(string value)
     {
         if (string.IsNullOrWhiteSpace(value) || !ValidationRegex.IsMatch(value))
-            return Results.ValueIsNotMatchRegexPatternValidationFailureResult(nameof(value), ValidationRegexPattern);
+            return Errors.General.ValueIsInvalid(nameof(Email), $"is not match pattern {ValidationRegexPattern}");
 
-        return Results.Success;
+        return true;
     }
 
     private static readonly string ValidationRegexPattern = @"^[\w-\.]{1,40}@([\w-]+\.)+[\w-]{2,4}$";

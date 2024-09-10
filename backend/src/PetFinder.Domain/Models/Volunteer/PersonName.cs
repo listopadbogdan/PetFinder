@@ -31,7 +31,7 @@ public record PersonName
         });
     }
 
-    private static Result Validate(string firstName, string? middleName, string lastName)
+    private static Result<bool, Error> Validate(string firstName, string? middleName, string lastName)
     {
         if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > Constants.PersonName.MaxFirstNameLength)
             return FirstNameValidationFailureResult;
@@ -42,21 +42,21 @@ public record PersonName
         if (string.IsNullOrWhiteSpace(lastName) || lastName.Length > Constants.PersonName.MaxLastNameLength)
             return LastNameValidationFailureResult;
 
-        return Results.Success;
+        return true;
     }
 
-    private static readonly Result FirstNameValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
+    private static readonly Result<bool, Error> FirstNameValidationFailureResult = 
+        Errors.General.ValueIsInvalid(
             valueName: nameof(FirstName),
-            valueMaxLimit: Constants.PersonName.MaxFirstNameLength));
+            description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxFirstNameLength));
 
-    private static readonly Result LastNameValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
+    private static readonly Result<bool, Error> LastNameValidationFailureResult = 
+        Errors.General.ValueIsInvalid(
             valueName: nameof(LastName),
-            valueMaxLimit: Constants.PersonName.MaxLastNameLength));
+            description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxLastNameLength));
 
-    private static readonly Result MiddleNameValidationFailureResult = Result.Failure(
-        StringHelper.GetValueMoreThanNeedString(
-            valueName: nameof(FirstName),
-            valueMaxLimit: Constants.PersonName.MaxMiddleNameLength));
+    private static readonly Result<bool, Error> MiddleNameValidationFailureResult =  
+        Errors.General.ValueIsInvalid(
+            valueName: nameof(MiddleName),
+            description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxMiddleNameLength));
 }

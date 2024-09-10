@@ -6,7 +6,7 @@ namespace PetFinder.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class VolunteerController(ApplicationDbContext context) : ControllerBase
+public class VolunteerController : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Create(

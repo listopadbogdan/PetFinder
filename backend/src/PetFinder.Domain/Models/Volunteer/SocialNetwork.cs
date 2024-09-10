@@ -28,7 +28,7 @@ public record SocialNetwork
         });
     }
 
-    private static Result Validate(string name, string url)
+    private static Result<bool, Error> Validate(string name, string url)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.SocialNetwork.MaxNameLength)
             return NameValidationFailureResult;
@@ -36,7 +36,7 @@ public record SocialNetwork
         if (string.IsNullOrWhiteSpace(url) || name.Length > Constants.SocialNetwork.MaxUrlLength)
             return UrlValidationFailureResult;
 
-        return Results.Success;
+        return true;
     }
 
     private static readonly Result NameValidationFailureResult = Result.Failure(
