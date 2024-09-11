@@ -67,6 +67,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.ToTable(
             Constants.Volunteer.TableName,
-            t => { t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0"); });
+            t => { t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" >= 0"); });
     }
 }

@@ -14,14 +14,14 @@ public class CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
         if (emailResult.IsFailure)
             return emailResult.Error;
 
-        if ((await volunteerRepository.GetByEmail(emailResult.Value, cancellationToken)).IsFailure)
+        if ((await volunteerRepository.GetByEmail(emailResult.Value, cancellationToken)).IsSuccess)
             return Errors.General.RecordWithValueIsNotUnique(nameof(Volunteer), nameof(Email), emailResult.Value);
 
         var phoneNumberResult = PhoneNumber.Create(request.PhoneNumber);
         if (phoneNumberResult.IsFailure)
             return phoneNumberResult.Error;
 
-        if ((await volunteerRepository.GetByPhoneNumber(phoneNumberResult.Value, cancellationToken)).IsFailure)
+        if ((await volunteerRepository.GetByPhoneNumber(phoneNumberResult.Value, cancellationToken)).IsSuccess)
             return Errors.General.RecordWithValueIsNotUnique(nameof(Volunteer), nameof(PhoneNumber),
                 phoneNumberResult.Value);
 
@@ -33,18 +33,22 @@ public class CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
             return personNameResult.Error;
 
         IEnumerable<Result<SocialNetwork, Error>> socialNetworks = request.SocialNetworkDtos
-            .Select(dto => SocialNetwork.Create(title: dto.Title, url: dto.Url));
+            .Select(dto => SocialNetwork.Create(title: dto.Title, url: dto.Url)).ToList();
 
-        Result<SocialNetwork, Error>? failedSn = socialNetworks.FirstOrDefault(sn => sn.IsFailure);
-        if (failedSn is not null)
-            return failedSn.Value.Error;
+        if (socialNetworks.Count(sn => sn.IsFailure) > 0)
+        {
+            var sn =  socialNetworks.First(sn => sn.IsFailure);
+            return sn.Error;
+        }
 
         IEnumerable<Result<AssistanceDetails, Error>> assistanceDetails = request.AssistanceDetailsDtos
-            .Select(dto => AssistanceDetails.Create(title: dto.Title, description: dto.Description));
+            .Select(dto => AssistanceDetails.Create(title: dto.Title, description: dto.Description)).ToList();
 
-        Result<AssistanceDetails, Error>? failedAs = assistanceDetails.FirstOrDefault(ad => ad.IsFailure);
-        if (failedAs is not null)
-            return failedAs.Value.Error;
+        if (assistanceDetails.Count(ad => ad.IsFailure) > 0)
+        {
+            var ad = assistanceDetails.First(ad => ad.IsFailure);
+            return ad.Error;
+        };
 
         var volunteerId = VolunteerId.New();
 
