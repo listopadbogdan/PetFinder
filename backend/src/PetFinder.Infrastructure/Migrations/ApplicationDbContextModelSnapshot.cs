@@ -258,6 +258,17 @@ namespace PetFinder.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("experience_years");
 
+                    b.ComplexProperty<Dictionary<string, object>>("Email", "PetFinder.Domain.Models.Volunteer.Email#Email", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(256)
+                                .HasColumnType("character varying(256)")
+                                .HasColumnName("email_value");
+                        });
+
                     b.ComplexProperty<Dictionary<string, object>>("PersonName", "PetFinder.Domain.Models.Volunteer.PersonName#PersonName", b1 =>
                         {
                             b1.IsRequired();
@@ -296,7 +307,7 @@ namespace PetFinder.Infrastructure.Migrations
 
                     b.ToTable("volunteers", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0");
+                            t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" >= 0");
                         });
                 });
 
@@ -343,7 +354,7 @@ namespace PetFinder.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Name")
+                            b1.Property<string>("Title")
                                 .IsRequired()
                                 .HasColumnType("text");
 
@@ -367,7 +378,7 @@ namespace PetFinder.Infrastructure.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("integer");
 
-                            b1.Property<string>("Name")
+                            b1.Property<string>("Title")
                                 .IsRequired()
                                 .HasColumnType("text");
 

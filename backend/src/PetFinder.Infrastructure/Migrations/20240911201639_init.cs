@@ -30,6 +30,7 @@ namespace PetFinder.Infrastructure.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     experience_years = table.Column<int>(type: "integer", nullable: false),
                     description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    email_value = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     person_name_first_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     person_name_last_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     person_name_middle_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
@@ -40,7 +41,7 @@ namespace PetFinder.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_volunteers", x => x.id);
-                    table.CheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0");
+                    table.CheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" >= 0");
                 });
 
             migrationBuilder.CreateTable(
