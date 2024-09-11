@@ -10,6 +10,7 @@ public static class WebApplicationExtensions
             app.UseSwaggerUI();
         }
 
+        app.MapControllers();
         app.UseHttpsRedirection();
 
         return app;

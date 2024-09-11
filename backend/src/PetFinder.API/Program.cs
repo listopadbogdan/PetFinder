@@ -1,7 +1,7 @@
 using PetFinder.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configure();
 
-var app = builder.Build();
+var app = builder.Configure().Build();
+
 app.Configure().Run();
