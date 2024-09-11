@@ -14,8 +14,7 @@ public record PhoneNumber
 
     public static Result<PhoneNumber, Error> Create(string value)
     {
-        var validationResult = Validate(
-            value: value);
+        var validationResult = Validate(value);
 
         if (validationResult.IsFailure)
             return validationResult.Error;
@@ -26,12 +25,12 @@ public record PhoneNumber
         };
     }
 
-    private static Result<bool, Error> Validate(string value)
+    private static UnitResult<Error> Validate(string value)
     {
         if (string.IsNullOrWhiteSpace(value) || !ValidationRegex.IsMatch(value))
-            return Errors.General.ValueIsInvalid();
+            return Errors.General.ValueIsInvalid(nameof(PhoneNumber), $"is not match pattern {ValidationRegexPattern}");
 
-        return true;
+        return UnitResult.Success<Error>();
     }
 
     private static readonly string ValidationRegexPattern = @"(^\+\d{1,3}\d{10}$|^$)";

@@ -12,41 +12,35 @@ public record AssistanceDetails
     public string Title { get; private set; } = default!;
     public string Description { get; private set; } = default!;
 
-    public static Result<AssistanceDetails> Create(string title, string description)
+    public static Result<AssistanceDetails, Error> Create(string title, string description)
     {
         var validationResult = Validate(
-            name: title,
+            title: title,
             description: description);
 
         if (validationResult.IsFailure)
-            return Result.Failure<AssistanceDetails>(validationResult.Error);
+            return validationResult.Error;
 
-        return Result.Success(new AssistanceDetails()
+        return new AssistanceDetails()
         {
             Description = description,
             Title = title
-        });
+        };
     }
 
-    private static Result Validate(string name, string description)
+    private static UnitResult<Error> Validate(string title, string description)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.AssistanceDetail.MaxNameLength)
-            return NameValidationFailureResult;
+        if (string.IsNullOrWhiteSpace(title) || title.Length > Constants.AssistanceDetail.MaxTitleLength)
+            return Errors.General.ValueIsInvalid(
+                nameof(Title),
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.AssistanceDetail.MaxTitleLength));
 
         if (string.IsNullOrWhiteSpace(description) ||
             description.Length > Constants.AssistanceDetail.MaxDescriptionLength)
-            return DescriptionValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                nameof(Title),
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.AssistanceDetail.MaxDescriptionLength));
 
-        return Results.Success;
+        return UnitResult.Success<Error>();
     }
-
-    private static readonly Result NameValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Title),
-            valueMaxLimit: Constants.AssistanceDetail.MaxNameLength));
-
-    private static readonly Result DescriptionValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Description),
-            valueMaxLimit: Constants.AssistanceDetail.MaxDescriptionLength));
 }

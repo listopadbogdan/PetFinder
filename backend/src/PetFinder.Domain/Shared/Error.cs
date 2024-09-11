@@ -16,8 +16,7 @@ public class Error
     public override string ToString()
         => $"Code: {Code}, Message: {Message}, ErrorType: {ErrorType}";
     
-    public static  implicit operator string(Error error) => error.ToString();
-    
+    public static implicit operator string(Error error) => error.ToString();
     
     public static Error Empty(string code, string message)
         => new Error(code, message, ErrorType.Empty);

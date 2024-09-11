@@ -15,7 +15,7 @@ public record Address
     public string House { get; private set; } = default!;
     public string? Description { get; private set; }
 
-    public static Result<Address> Create(string country, string city, string street, string house,
+    public static Result<Address, Error> Create(string country, string city, string street, string house,
         string? description)
     {
         var validationResult = Validate(
@@ -26,61 +26,46 @@ public record Address
             description: description);
 
         if (validationResult.IsFailure)
-            return Result.Failure<Address>(validationResult.Error);
+            return validationResult.Error;
 
-        return Result.Success(new Address()
+        return new Address()
         {
             Country = country,
             City = city,
             Street = street,
             House = house,
             Description = description
-        });
+        };
     }
 
-    private static Result Validate(string country, string city, string street, string house,
+    private static UnitResult<Error> Validate(string country, string city, string street, string house,
         string? description)
     {
         if (string.IsNullOrWhiteSpace(country) || country.Length > Constants.Address.MaxCountryLength)
-            return CountryValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                nameof(Country),
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.Address.MaxCountryLength));
 
         if (string.IsNullOrWhiteSpace(city) || city.Length > Constants.Address.MaxCityLength)
-            return CityValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                nameof(City),
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.Address.MaxCityLength));
 
         if (string.IsNullOrWhiteSpace(street) || street.Length > Constants.Address.MaxStreetLength)
-            return StreetValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                nameof(Street),
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.Address.MaxStreetLength));
 
         if (string.IsNullOrWhiteSpace(house) || house.Length > Constants.Address.MaxStreetLength)
-            return HouseValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                nameof(House),
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.Address.MaxHouseLength));
 
         if (description?.Length > Constants.Address.MaxDescriptionLength)
-            return DescriptionValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                nameof(Description),
+                StringHelper.GetValueMoreThanNeedString(Constants.Address.MaxDescriptionLength));
 
-        return Results.Success;
+        return UnitResult.Success<Error>();
     }
-
-    private static readonly Result DescriptionValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Description),
-            valueMaxLimit: Constants.Address.MaxDescriptionLength));
-
-    private static readonly Result HouseValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(House),
-            valueMaxLimit: Constants.Address.MaxHouseLength));
-
-    private static readonly Result CityValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(City),
-            valueMaxLimit: Constants.Address.MaxCityLength));
-
-    private static readonly Result StreetValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Street),
-            valueMaxLimit: Constants.Address.MaxStreetLength));
-
-    private static readonly Result CountryValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Country),
-            valueMaxLimit: Constants.Address.MaxCountryLength));
 }

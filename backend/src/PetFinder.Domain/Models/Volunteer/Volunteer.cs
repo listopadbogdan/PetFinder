@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PetFinder.Domain.Shared;
 
 namespace PetFinder.Domain.Models;
 
@@ -7,6 +8,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
     private readonly List<AssistanceDetails> _assistanceDetails = default!;
     private readonly List<Pet> _pets = default!;
     private readonly List<SocialNetwork> _socialNetworks = default!;
+
     private Volunteer(VolunteerId id)
         : base(id)
     {
@@ -46,7 +48,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int PetsLookingForHomeCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.LookingForHome);
     public int PetsOnTreatmentCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.OnTreatment);
 
-    public static Result<Volunteer> Create(
+    public static Result<Volunteer, Error> Create(
         VolunteerId id,
         PersonName personName,
         PhoneNumber phoneNumber,
@@ -56,7 +58,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         int experienceYears,
         string description)
     {
-        var volunteer = new Volunteer(
+        return new Volunteer(
             id: id,
             personName: personName,
             phoneNumber: phoneNumber,
@@ -66,6 +68,5 @@ public class Volunteer : Shared.Entity<VolunteerId>
             experienceYears: experienceYears,
             description: description
         );
-        return Result.Success(volunteer);
     }
 }

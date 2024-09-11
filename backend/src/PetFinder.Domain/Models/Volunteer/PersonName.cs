@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using CSharpFunctionalExtensions;
 using PetFinder.Domain.Shared;
 
@@ -13,7 +14,7 @@ public record PersonName
     public string? MiddleName { get; private set; }
     public string LastName { get; private set; } = default!;
 
-    public static Result<PersonName> Create(string firstName, string? middleName, string lastName)
+    public static Result<PersonName, Error> Create(string firstName, string? middleName, string lastName)
     {
         var validationResult = Validate(
             firstName: firstName,
@@ -21,42 +22,33 @@ public record PersonName
             lastName: lastName);
 
         if (validationResult.IsFailure)
-            return Result.Failure<PersonName>(validationResult.Error);
+            return validationResult.Error;
 
-        return Result.Success(new PersonName()
+        return new PersonName()
         {
             FirstName = firstName,
             LastName = lastName,
             MiddleName = middleName
-        });
+        };
     }
 
-    private static Result<bool, Error> Validate(string firstName, string? middleName, string lastName)
+    private static UnitResult<Error> Validate(string firstName, string? middleName, string lastName)
     {
         if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > Constants.PersonName.MaxFirstNameLength)
-            return FirstNameValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                valueName: nameof(FirstName),
+                description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxFirstNameLength));
 
         if (middleName?.Length > Constants.PersonName.MaxMiddleNameLength)
-            return MiddleNameValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                    valueName: nameof(LastName),
+                    description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxLastNameLength));
 
         if (string.IsNullOrWhiteSpace(lastName) || lastName.Length > Constants.PersonName.MaxLastNameLength)
-            return LastNameValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                valueName: nameof(MiddleName),
+                description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxMiddleNameLength));
 
-        return true;
+        return UnitResult.Success<Error>();
     }
-
-    private static readonly Result<bool, Error> FirstNameValidationFailureResult = 
-        Errors.General.ValueIsInvalid(
-            valueName: nameof(FirstName),
-            description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxFirstNameLength));
-
-    private static readonly Result<bool, Error> LastNameValidationFailureResult = 
-        Errors.General.ValueIsInvalid(
-            valueName: nameof(LastName),
-            description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxLastNameLength));
-
-    private static readonly Result<bool, Error> MiddleNameValidationFailureResult =  
-        Errors.General.ValueIsInvalid(
-            valueName: nameof(MiddleName),
-            description: StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.PersonName.MaxMiddleNameLength));
 }

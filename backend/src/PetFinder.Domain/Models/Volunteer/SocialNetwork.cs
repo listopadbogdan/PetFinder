@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using CSharpFunctionalExtensions;
 using PetFinder.Domain.Shared;
 
@@ -12,40 +13,34 @@ public record SocialNetwork
     public string Title { get; private set; } = default!;
     public string Url { get; private set; } = default!;
 
-    public static Result<SocialNetwork> Create(string title, string url)
+    public static Result<SocialNetwork, Error> Create(string title, string url)
     {
         var validationResult = Validate(
             name: title,
             url: url);
 
         if (validationResult.IsFailure)
-            return Result.Failure<SocialNetwork>(validationResult.Error);
+            return validationResult.Error;
 
-        return Result.Success(new SocialNetwork()
+        return new SocialNetwork()
         {
             Title = title,
             Url = url
-        });
+        };
     }
 
-    private static Result<bool, Error> Validate(string name, string url)
+    private static UnitResult<Error> Validate(string name, string url)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.SocialNetwork.MaxNameLength)
-            return NameValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                nameof(Title),
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.SocialNetwork.MaxNameLength));
 
         if (string.IsNullOrWhiteSpace(url) || name.Length > Constants.SocialNetwork.MaxUrlLength)
-            return UrlValidationFailureResult;
+            return Errors.General.ValueIsInvalid(
+                nameof(Url),
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.SocialNetwork.MaxUrlLength));
 
-        return true;
+        return UnitResult.Success<Error>();
     }
-
-    private static readonly Result NameValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Title),
-            valueMaxLimit: Constants.SocialNetwork.MaxNameLength));
-
-    private static readonly Result UrlValidationFailureResult = Result.Failure(
-        StringHelper.GetValueEmptyOrMoreThanNeedString(
-            valueName: nameof(Url),
-            valueMaxLimit: Constants.SocialNetwork.MaxUrlLength));
 }

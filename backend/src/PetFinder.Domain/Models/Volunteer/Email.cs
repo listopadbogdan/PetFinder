@@ -12,26 +12,25 @@ public record Email
 
     public string Value { get; private set; } = default!;
 
-    public static Result<Email> Create(string value)
+    public static Result<Email, Error> Create(string value)
     {
-        var validationResult = Validate(
-            value: value);
+        var validationResult = Validate(value);
 
         if (validationResult.IsFailure)
-            return Result.Failure<Email>(validationResult.Error);
+            return validationResult.Error;
 
-        return Result.Success(new Email()
+        return new Email
         {
             Value = value,
-        });
+        };
     }
 
-    private static Result<bool, Error> Validate(string value)
+    private static UnitResult<Error> Validate(string value)
     {
         if (string.IsNullOrWhiteSpace(value) || !ValidationRegex.IsMatch(value))
             return Errors.General.ValueIsInvalid(nameof(Email), $"is not match pattern {ValidationRegexPattern}");
 
-        return true;
+        return UnitResult.Success<Error>();
     }
 
     private static readonly string ValidationRegexPattern = @"^[\w-\.]{1,40}@([\w-]+\.)+[\w-]{2,4}$";

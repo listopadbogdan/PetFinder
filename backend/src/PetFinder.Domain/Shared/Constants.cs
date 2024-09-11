@@ -60,7 +60,7 @@ public static class Constants
 
     public static class AssistanceDetail
     {
-        public const int MaxNameLength = 64;
+        public const int MaxTitleLength = 64;
         public const int MaxDescriptionLength = 128;
     }
 
