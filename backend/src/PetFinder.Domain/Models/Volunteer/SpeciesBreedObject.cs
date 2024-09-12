@@ -12,10 +12,10 @@ public record SpeciesBreedObject
     public SpeciesId SpeciesId { get; private set; } = default!;
     public BreedId BreedId { get; private set; } = default!;
 
-    public static Result<SpeciesBreedObject> Create(SpeciesId speciesId, BreedId breedId)
-        => Result.Success(new SpeciesBreedObject()
+    public static Result<SpeciesBreedObject, Error> Create(SpeciesId speciesId, BreedId breedId)
+        => new SpeciesBreedObject()
         {
             SpeciesId = speciesId,
             BreedId = breedId
-        });
+        };
 }

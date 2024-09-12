@@ -403,6 +403,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 .idea
+global.json
 
 ##
 ## Visual studio for Mac

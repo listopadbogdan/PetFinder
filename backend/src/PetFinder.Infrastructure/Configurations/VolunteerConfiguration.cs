@@ -37,6 +37,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .IsRequired();
         });
 
+        builder.ComplexProperty(v => v.Email, pnb =>
+        {
+            pnb.Property(p => p.Value)
+                .HasMaxLength(Constants.Email.MaxLength)
+                .IsRequired();
+        });
+
         builder.Property(v => v.Description)
             .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
             .IsRequired();
@@ -49,6 +56,9 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsMany(v => v.AssistanceDetails)
             .ToJson();
+
+        builder.HasMany(v => v.Pets)
+            .WithOne();
         
         //TODO - resolve problem with UQ index for Volunteer.PhoneNumber
         // builder.HasIndex(Constants.PhoneNumber.ColumnName)
@@ -57,6 +67,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.ToTable(
             Constants.Volunteer.TableName,
-            t => { t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" > 0"); });
+            t => { t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" >= 0"); });
     }
 }

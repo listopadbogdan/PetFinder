@@ -26,6 +26,11 @@ public static class Constants
         public const int MaxLength = 16;
     }
 
+    public static class Email
+    {
+        public const int MaxLength = 256;
+    }
+
     public static class Pet
     {
         public const int MaxNameLength = 128;
@@ -55,7 +60,7 @@ public static class Constants
 
     public static class AssistanceDetail
     {
-        public const int MaxNameLength = 64;
+        public const int MaxTitleLength = 64;
         public const int MaxDescriptionLength = 128;
     }
 
@@ -81,6 +86,5 @@ public static class Constants
 
     public static class ValueObject
     {
-        public static readonly Result SuccessValidationResult = Result.Success();
     }
 }
