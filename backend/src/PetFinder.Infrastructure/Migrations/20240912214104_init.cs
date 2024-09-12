@@ -72,7 +72,6 @@ namespace PetFinder.Infrastructure.Migrations
                     name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     animal_type = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     general_description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    breed = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     color = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     health_information = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     weight = table.Column<double>(type: "double precision", nullable: false),
