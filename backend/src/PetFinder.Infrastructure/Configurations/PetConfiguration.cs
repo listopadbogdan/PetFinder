@@ -31,10 +31,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasMaxLength(Constants.Pet.MaxGeneralDescriptionLength)
             .IsRequired();
 
-        builder.Property(p => p.Breed)
-            .HasMaxLength(Constants.Pet.MaxBreedLength)
-            .IsRequired();
-
         builder.Property(p => p.Color)
             .HasMaxLength(Constants.Pet.MaxColorLength)
             .IsRequired();

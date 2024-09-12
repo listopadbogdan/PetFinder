@@ -10,7 +10,12 @@ public record Email
     {
     }
 
-    public string Value { get; private set; } = default!;
+    private Email(string value)
+    {
+        Value = value;
+    }
+
+    public string Value { get; } = default!;
 
     public static Result<Email, Error> Create(string value)
     {
@@ -19,10 +24,7 @@ public record Email
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        return new Email
-        {
-            Value = value,
-        };
+        return new Email(value: value);
     }
 
     private static UnitResult<Error> Validate(string value)

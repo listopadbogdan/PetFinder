@@ -10,8 +10,14 @@ public record SocialNetwork
     {
     }
 
-    public string Title { get; private set; } = default!;
-    public string Url { get; private set; } = default!;
+    private SocialNetwork(string title, string url)
+    {
+        Title = title;
+        Url = url;
+    }
+
+    public string Title { get; } = default!;
+    public string Url { get; } = default!;
 
     public static Result<SocialNetwork, Error> Create(string title, string url)
     {
@@ -22,11 +28,9 @@ public record SocialNetwork
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        return new SocialNetwork()
-        {
-            Title = title,
-            Url = url
-        };
+        return new SocialNetwork(
+            title: title,
+            url: url);
     }
 
     private static UnitResult<Error> Validate(string name, string url)

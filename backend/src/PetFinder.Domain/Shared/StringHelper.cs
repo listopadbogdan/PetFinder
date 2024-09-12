@@ -11,6 +11,9 @@ public static class StringHelper
     public static string GetValueEmptyOrMoreThanNeedString(int valueMaxLimit)
         => $"can not be empty or more than {valueMaxLimit}";
 
-    public static string GetValueMoreThanNeedString(int valueMaxLimit)
+    public static string GetValueMoreThanNeedString<T>(T valueMaxLimit)
         => $"more than {valueMaxLimit}";
+
+    public static string GetValueLessThanNeedString<T>(T valueMinLimit)
+        => $"less then need";
 }

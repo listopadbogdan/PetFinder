@@ -41,6 +41,8 @@ public static class Constants
         public const int MaxHealthInformationLength = 256;
         public const int MaxOwnerPhoneNumberLength = 16;
         public const string TableName = "pets";
+        public const double MinWeightValue = 0.1d;
+        public const double MinHeightValue = 0.01d;
     }
 
     public static class Address

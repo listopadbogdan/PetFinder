@@ -9,12 +9,27 @@ public record Address
     {
     }
 
-    public string Country { get; private set; } = default!;
-    public string City { get; private set; } = default!;
-    public string Street { get; private set; } = default!;
-    public string House { get; private set; } = default!;
+    private Address(
+        string country,
+        string city,
+        string street,
+        string house,
+        string? description)
+    {
+        Country = country;
+        City = city;
+        Street = street;
+        House = house;
+        Description = description;
+    }
+
+    public string Country { get; } = default!;
+    public string City { get; } = default!;
+    public string Street { get; } = default!;
+    public string House { get; } = default!;
     public string? Description { get; private set; }
 
+    
     public static Result<Address, Error> Create(string country, string city, string street, string house,
         string? description)
     {
@@ -28,14 +43,12 @@ public record Address
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        return new Address()
-        {
-            Country = country,
-            City = city,
-            Street = street,
-            House = house,
-            Description = description
-        };
+        return new Address(
+            country: country,
+            city: city,
+            street: street,
+            house: house,
+            description: description);
     }
 
     private static UnitResult<Error> Validate(string country, string city, string street, string house,
