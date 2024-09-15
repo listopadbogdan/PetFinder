@@ -1,5 +1,8 @@
 using CSharpFunctionalExtensions;
-using PetFinder.Domain.Models;
+using PetFinder.Domain.Shared;
+using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.Volunteer.Models;
+using PetFinder.Domain.Volunteer.ValueObjects;
 
 namespace PetFinder.Application.Features;
 

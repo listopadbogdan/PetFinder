@@ -2,7 +2,10 @@ using System.Linq.Expressions;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using PetFinder.Application.Features;
-using PetFinder.Domain.Models;
+using PetFinder.Domain.Shared;
+using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.Volunteer.Models;
+using PetFinder.Domain.Volunteer.ValueObjects;
 
 namespace PetFinder.Infrastructure.Repositories;
 
