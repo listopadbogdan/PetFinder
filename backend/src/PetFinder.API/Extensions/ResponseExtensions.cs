@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFinder.Domain.Shared;
+using PetFinder.Domain.SharedKernel;
 
 namespace PetFinder.API.Extensions;
 
