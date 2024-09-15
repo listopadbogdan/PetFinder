@@ -9,8 +9,14 @@ public record AssistanceDetails
     {
     }
 
-    public string Title { get; private set; } = default!;
-    public string Description { get; private set; } = default!;
+    private AssistanceDetails(string title, string description)
+    {
+        Title = title;
+        Description = description;
+    }
+
+    public string Title { get; } = default!;
+    public string Description { get; } = default!;
 
     public static Result<AssistanceDetails, Error> Create(string title, string description)
     {
@@ -21,11 +27,9 @@ public record AssistanceDetails
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        return new AssistanceDetails()
-        {
-            Description = description,
-            Title = title
-        };
+        return new AssistanceDetails(
+            description: description,
+            title: title);
     }
 
     private static UnitResult<Error> Validate(string title, string description)

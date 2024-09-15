@@ -18,20 +18,21 @@ public class Volunteer : Shared.Entity<VolunteerId>
         VolunteerId id,
         PersonName personName,
         PhoneNumber phoneNumber,
-        List<SocialNetwork> socialNetworks,
-        List<AssistanceDetails> assistanceDetails,
         Email email,
         int experienceYears,
-        string description) : base(id)
+        string description,
+        List<SocialNetwork>? socialNetworks,
+        List<AssistanceDetails>? assistanceDetails,
+        List<Pet>? pets) : base(id)
     {
         PersonName = personName;
         PhoneNumber = phoneNumber;
         ExperienceYears = experienceYears;
         Description = description;
         Email = email;
-        _socialNetworks = socialNetworks;
-        _assistanceDetails = assistanceDetails;
-        _socialNetworks = [];
+        _socialNetworks = socialNetworks ?? [];
+        _pets = pets ?? [];
+        _assistanceDetails = assistanceDetails ?? [];
     }
 
     public PersonName PersonName { get; private set; } = default!;
@@ -52,21 +53,23 @@ public class Volunteer : Shared.Entity<VolunteerId>
         VolunteerId id,
         PersonName personName,
         PhoneNumber phoneNumber,
-        IEnumerable<SocialNetwork>? socialNetworks,
-        IEnumerable<AssistanceDetails>? assistanceDetails,
         Email email,
         int experienceYears,
-        string description)
+        string description,
+        IEnumerable<SocialNetwork>? socialNetworks = default,
+        IEnumerable<AssistanceDetails>? assistanceDetails = null,
+        IEnumerable<Pet>? pets = null)
     {
         return new Volunteer(
             id: id,
             personName: personName,
             phoneNumber: phoneNumber,
-            socialNetworks: socialNetworks?.ToList() ?? [],
-            assistanceDetails: assistanceDetails?.ToList() ?? [],
             email: email,
             experienceYears: experienceYears,
-            description: description
+            description: description,
+            socialNetworks: socialNetworks?.ToList(),
+            assistanceDetails: assistanceDetails?.ToList(),
+            pets: pets?.ToList()
         );
     }
 }

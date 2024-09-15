@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using PetFinder.API.Extensions;
 using PetFinder.Application.Features;
 using PetFinder.Infrastructure;
 
@@ -17,7 +18,7 @@ public class VolunteerController : ControllerBase
         var result = await handler.Handle(createVolunteerRequest, cancellationToken);
 
         return result.IsFailure
-            ? BadRequest(result.Error)
+            ? result.Error.ToResponse()
             : Ok(result.Value);
     }
 }

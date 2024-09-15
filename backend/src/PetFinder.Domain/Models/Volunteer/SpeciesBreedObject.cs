@@ -9,13 +9,17 @@ public record SpeciesBreedObject
     {
     }
 
-    public SpeciesId SpeciesId { get; private set; } = default!;
-    public BreedId BreedId { get; private set; } = default!;
+    private SpeciesBreedObject(SpeciesId speciesId, BreedId breedId)
+    {
+        SpeciesId = speciesId;
+        BreedId = breedId;  
+    }
+
+    public SpeciesId SpeciesId { get; } = default!;
+    public BreedId BreedId { get; } = default!;
 
     public static Result<SpeciesBreedObject, Error> Create(SpeciesId speciesId, BreedId breedId)
-        => new SpeciesBreedObject()
-        {
-            SpeciesId = speciesId,
-            BreedId = breedId
-        };
+        => new SpeciesBreedObject(
+            speciesId: speciesId,
+            breedId: breedId);
 }

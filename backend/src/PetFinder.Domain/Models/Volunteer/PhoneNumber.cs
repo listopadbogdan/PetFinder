@@ -10,7 +10,12 @@ public record PhoneNumber
     {
     }
 
-    public string Value { get; private set; } = default!;
+    private PhoneNumber(string value)
+    {
+        Value = value;
+    }
+
+    public string Value { get; } = default!;
 
     public static Result<PhoneNumber, Error> Create(string value)
     {
@@ -19,10 +24,7 @@ public record PhoneNumber
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        return new PhoneNumber()
-        {
-            Value = value
-        };
+        return new PhoneNumber(value);
     }
 
     private static UnitResult<Error> Validate(string value)

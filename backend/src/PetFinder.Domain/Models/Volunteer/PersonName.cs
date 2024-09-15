@@ -10,9 +10,16 @@ public record PersonName
     {
     }
 
-    public string FirstName { get; private set; } = default!;
-    public string? MiddleName { get; private set; }
-    public string LastName { get; private set; } = default!;
+    private PersonName(string firstName, string lastName, string? middleName)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        MiddleName = middleName;
+    }
+    
+    public string FirstName { get;  } = default!;
+    public string? MiddleName { get; }
+    public string LastName { get; } = default!;
 
     public static Result<PersonName, Error> Create(string firstName, string? middleName, string lastName)
     {
@@ -24,12 +31,10 @@ public record PersonName
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        return new PersonName()
-        {
-            FirstName = firstName,
-            LastName = lastName,
-            MiddleName = middleName
-        };
+        return new PersonName(
+            firstName: firstName,
+            lastName: lastName,
+            middleName: middleName);
     }
 
     private static UnitResult<Error> Validate(string firstName, string? middleName, string lastName)
