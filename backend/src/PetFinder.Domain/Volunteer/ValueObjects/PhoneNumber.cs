@@ -28,7 +28,7 @@ public record PhoneNumber
         return new PhoneNumber(value);
     }
 
-    private static UnitResult<Error> Validate(string value)
+    public static UnitResult<Error> Validate(string value)
     {
         if (string.IsNullOrWhiteSpace(value) || !ValidationRegex.IsMatch(value))
             return Errors.General.ValueIsInvalid(nameof(PhoneNumber), $"is not match pattern {ValidationRegexPattern}");

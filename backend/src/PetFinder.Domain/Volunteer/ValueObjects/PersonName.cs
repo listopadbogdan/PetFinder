@@ -37,7 +37,7 @@ public record PersonName
             middleName: middleName);
     }
 
-    private static UnitResult<Error> Validate(string firstName, string? middleName, string lastName)
+    public static UnitResult<Error> Validate(string firstName, string? middleName, string lastName)
     {
         if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > Constants.PersonName.MaxFirstNameLength)
             return Errors.General.ValueIsInvalid(

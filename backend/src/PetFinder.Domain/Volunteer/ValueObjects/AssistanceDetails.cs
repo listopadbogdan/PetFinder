@@ -33,7 +33,7 @@ public record AssistanceDetails
             title: title);
     }
 
-    private static UnitResult<Error> Validate(string title, string description)
+    public static UnitResult<Error> Validate(string title, string description)
     {
         if (string.IsNullOrWhiteSpace(title) || title.Length > Constants.AssistanceDetail.MaxTitleLength)
             return Errors.General.ValueIsInvalid(
