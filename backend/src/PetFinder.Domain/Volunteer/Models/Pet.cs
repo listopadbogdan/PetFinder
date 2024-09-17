@@ -9,7 +9,7 @@ namespace PetFinder.Domain.Volunteer.Models;
 
 public class Pet : SharedKernel.Entity<PetId>
 {
-    private readonly List<PetPhoto> _photos = default!;
+    private readonly List<PetPhoto> _photos;
 
     private Pet(PetId id) : base(id)
     {

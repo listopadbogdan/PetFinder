@@ -8,9 +8,9 @@ namespace PetFinder.Domain.Volunteer.Models;
 
 public class Volunteer : SharedKernel.Entity<VolunteerId>
 {
-    private readonly List<AssistanceDetails> _assistanceDetails = default!;
-    private readonly List<Pet> _pets = [];
-    private readonly List<SocialNetwork> _socialNetworks = default!;
+    private readonly List<AssistanceDetails> _assistanceDetails;
+    private readonly List<Pet> _pets;
+    private readonly List<SocialNetwork> _socialNetworks;
 
     private Volunteer(VolunteerId id)
         : base(id)
@@ -34,6 +34,7 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
         Email = email;
         _socialNetworks = socialNetworks?.ToList() ?? [];
         _assistanceDetails = assistanceDetails?.ToList() ?? [];
+        _pets = [];
     }
 
     public PersonName PersonName { get; private set; } = default!;
