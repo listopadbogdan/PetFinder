@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFinder.API.Extensions;
 using PetFinder.Application.Features;
-using PetFinder.Infrastructure;
 
 namespace PetFinder.API.Controllers;
 
