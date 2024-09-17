@@ -20,13 +20,16 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
                 value => BreedId.Create(value));
 
         builder.HasOne(b => b.Species)
-            .WithMany(s => s.Breeds);
+            .WithMany(s => s.Breeds)
+            .HasForeignKey("species_id");
         
         builder.Property(b => b.Title)
+            .HasColumnName("title")
             .HasMaxLength(Constants.Breed.MaxTitleLength)
             .IsRequired();
 
         builder.Property(b => b.Description)
+            .HasColumnName("description")
             .HasMaxLength(Constants.Breed.MaxDescriptionLength)
             .IsRequired();
     }

@@ -35,20 +35,20 @@ namespace PetFinder.Infrastructure.Migrations
                         .HasColumnType("character varying(128)")
                         .HasColumnName("description");
 
-                    b.Property<Guid>("SpeciesId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("species_id");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)")
                         .HasColumnName("title");
 
+                    b.Property<Guid>("species_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("species_id");
+
                     b.HasKey("Id")
                         .HasName("pk_breed");
 
-                    b.HasIndex("SpeciesId")
+                    b.HasIndex("species_id")
                         .HasDatabaseName("ix_breed_species_id");
 
                     b.ToTable("breed", (string)null);
@@ -136,15 +136,15 @@ namespace PetFinder.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(16)
                         .HasColumnType("character varying(16)")
-                        .HasColumnName("owner_phone_number");
-
-                    b.Property<Guid?>("VolunteerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("volunteer_id");
+                        .HasColumnName("owner_phone");
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
+
+                    b.Property<Guid?>("volunteer_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("volunteer_id");
 
                     b.ComplexProperty<Dictionary<string, object>>("Address", "PetFinder.Domain.Volunteer.Models.Pet.Address#Address", b1 =>
                         {
@@ -154,30 +154,30 @@ namespace PetFinder.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(64)
                                 .HasColumnType("character varying(64)")
-                                .HasColumnName("address_city");
+                                .HasColumnName("city");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .HasMaxLength(64)
                                 .HasColumnType("character varying(64)")
-                                .HasColumnName("address_country");
+                                .HasColumnName("country");
 
                             b1.Property<string>("Description")
                                 .HasMaxLength(64)
                                 .HasColumnType("character varying(64)")
-                                .HasColumnName("address_description");
+                                .HasColumnName("description");
 
                             b1.Property<string>("House")
                                 .IsRequired()
                                 .HasMaxLength(16)
                                 .HasColumnType("character varying(16)")
-                                .HasColumnName("address_house");
+                                .HasColumnName("house");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
                                 .HasMaxLength(64)
                                 .HasColumnType("character varying(64)")
-                                .HasColumnName("address_street");
+                                .HasColumnName("street");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("SpeciesBreedObject", "PetFinder.Domain.Volunteer.Models.Pet.SpeciesBreedObject#SpeciesBreedObject", b1 =>
@@ -186,17 +186,17 @@ namespace PetFinder.Infrastructure.Migrations
 
                             b1.Property<Guid>("BreedId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("species_breed_object_breed_id");
+                                .HasColumnName("breed_id");
 
                             b1.Property<Guid>("SpeciesId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("species_breed_object_species_id");
+                                .HasColumnName("species_id");
                         });
 
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
-                    b.HasIndex("VolunteerId")
+                    b.HasIndex("volunteer_id")
                         .HasDatabaseName("ix_pets_volunteer_id");
 
                     b.ToTable("pets", null, t =>
@@ -223,14 +223,14 @@ namespace PetFinder.Infrastructure.Migrations
                         .HasColumnType("character varying(256)")
                         .HasColumnName("path");
 
-                    b.Property<Guid?>("PetId")
+                    b.Property<Guid?>("pet_id")
                         .HasColumnType("uuid")
                         .HasColumnName("pet_id");
 
                     b.HasKey("Id")
                         .HasName("pk_pet_photos");
 
-                    b.HasIndex("PetId")
+                    b.HasIndex("pet_id")
                         .HasDatabaseName("ix_pet_photos_pet_id");
 
                     b.ToTable("pet_photos", (string)null);
@@ -254,7 +254,7 @@ namespace PetFinder.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(256)
                                 .HasColumnType("character varying(256)")
-                                .HasColumnName("description_value");
+                                .HasColumnName("description");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("Email", "PetFinder.Domain.Volunteer.Models.Volunteer.Email#Email", b1 =>
@@ -265,7 +265,7 @@ namespace PetFinder.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(256)
                                 .HasColumnType("character varying(256)")
-                                .HasColumnName("email_value");
+                                .HasColumnName("email");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PersonName", "PetFinder.Domain.Volunteer.Models.Volunteer.PersonName#PersonName", b1 =>
@@ -276,18 +276,18 @@ namespace PetFinder.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(32)
                                 .HasColumnType("character varying(32)")
-                                .HasColumnName("person_name_first_name");
+                                .HasColumnName("first_name");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()
                                 .HasMaxLength(32)
                                 .HasColumnType("character varying(32)")
-                                .HasColumnName("person_name_last_name");
+                                .HasColumnName("last_name");
 
                             b1.Property<string>("MiddleName")
                                 .HasMaxLength(32)
                                 .HasColumnType("character varying(32)")
-                                .HasColumnName("person_name_middle_name");
+                                .HasColumnName("middle_name");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "PetFinder.Domain.Volunteer.Models.Volunteer.PhoneNumber#PhoneNumber", b1 =>
@@ -298,7 +298,7 @@ namespace PetFinder.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(16)
                                 .HasColumnType("character varying(16)")
-                                .HasColumnName("phone_number_value");
+                                .HasColumnName("phone_number");
                         });
 
                     b.HasKey("Id")
@@ -314,7 +314,7 @@ namespace PetFinder.Infrastructure.Migrations
                 {
                     b.HasOne("PetFinder.Domain.Species.Models.Species", "Species")
                         .WithMany("Breeds")
-                        .HasForeignKey("SpeciesId")
+                        .HasForeignKey("species_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_breed_species_species_id");
@@ -326,7 +326,8 @@ namespace PetFinder.Infrastructure.Migrations
                 {
                     b.HasOne("PetFinder.Domain.Volunteer.Models.Volunteer", null)
                         .WithMany("Pets")
-                        .HasForeignKey("VolunteerId")
+                        .HasForeignKey("volunteer_id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
                 });
 
@@ -334,7 +335,8 @@ namespace PetFinder.Infrastructure.Migrations
                 {
                     b.HasOne("PetFinder.Domain.Volunteer.Models.Pet", null)
                         .WithMany("Photos")
-                        .HasForeignKey("PetId")
+                        .HasForeignKey("pet_id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_pet_photos_pets_pet_id");
                 });
 
@@ -359,7 +361,8 @@ namespace PetFinder.Infrastructure.Migrations
                                 .HasMaxLength(64)
                                 .HasColumnType("character varying(64)");
 
-                            b1.HasKey("VolunteerId", "Id");
+                            b1.HasKey("VolunteerId", "Id")
+                                .HasName("pk_volunteers");
 
                             b1.ToTable("volunteers");
 
@@ -389,7 +392,8 @@ namespace PetFinder.Infrastructure.Migrations
                                 .HasMaxLength(256)
                                 .HasColumnType("character varying(256)");
 
-                            b1.HasKey("VolunteerId", "Id");
+                            b1.HasKey("VolunteerId", "Id")
+                                .HasName("pk_volunteers");
 
                             b1.ToTable("volunteers");
 

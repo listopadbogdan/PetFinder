@@ -20,13 +20,16 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ComplexProperty(v => v.PersonName, vnb =>
         {
             vnb.Property(v => v.FirstName)
+                .HasColumnName("first_name")
                 .HasMaxLength(Constants.Volunteer.MaxFirstNameLength)
                 .IsRequired();
 
             vnb.Property(v => v.MiddleName)
+                .HasColumnName("middle_name")
                 .HasMaxLength(Constants.Volunteer.MaxMiddleNameLength);
 
             vnb.Property(v => v.LastName)
+                .HasColumnName("last_name")
                 .HasMaxLength(Constants.Volunteer.MaxLastNameLength)
                 .IsRequired();
         });
@@ -34,6 +37,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ComplexProperty(v => v.PhoneNumber, pnb =>
         {
             pnb.Property(p => p.Value)
+                .HasColumnName("phone_number")
                 .HasMaxLength(Constants.PhoneNumber.MaxLength)
                 .IsRequired();
         });
@@ -41,6 +45,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ComplexProperty(v => v.Email, pnb =>
         {
             pnb.Property(p => p.Value)
+                .HasColumnName("email")
                 .HasMaxLength(Constants.Email.MaxLength)
                 .IsRequired();
         });
@@ -48,16 +53,18 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ComplexProperty(v => v.Description, cpb =>
         {
             cpb.Property(d => d.Value)
+                .HasColumnName("description")
                 .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
                 .IsRequired();
         });
 
         builder.Property(v => v.ExperienceYears)
+            .HasColumnName("experience_years")
             .IsRequired();
 
         builder.OwnsMany(v => v.SocialNetworks, snb =>
         {
-            snb.ToJson();
+            snb.ToJson("social_networks");
 
             snb.Property(sn => sn.Title)
                 .HasMaxLength(Constants.SocialNetwork.MaxTitleLength)
@@ -70,7 +77,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsMany(v => v.AssistanceDetails, adb =>
         {
-            adb.ToJson();
+            adb.ToJson("assistance_details");
 
             adb.Property(a => a.Description)
                 .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
@@ -83,7 +90,9 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
 
         builder.HasMany(v => v.Pets)
-            .WithOne();
+            .WithOne()
+            .HasForeignKey("volunteer_id")
+            .OnDelete(DeleteBehavior.Cascade);
 
         //TODO - resolve problem with UQ index for Volunteer.PhoneNumber
         // builder.HasIndex(Constants.PhoneNumber.ColumnName)

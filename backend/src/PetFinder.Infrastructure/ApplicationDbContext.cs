@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PetFinder.Domain.Species.Models;
 using PetFinder.Domain.Volunteer.Models;
+using PetFinder.Infrastructure.Configurations;
 
 namespace PetFinder.Infrastructure;
 

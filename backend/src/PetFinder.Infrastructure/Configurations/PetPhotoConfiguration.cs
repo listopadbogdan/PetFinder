@@ -19,10 +19,12 @@ public class PetPhotoConfiguration : IEntityTypeConfiguration<PetPhoto>
                 value => PetPhotoId.Create(value));
 
         builder.Property(p => p.Path)
+            .HasColumnName("path")
             .HasMaxLength(Constants.PetPhoto.MaxPathLength)
             .IsRequired();
 
         builder.Property(p => p.IsMain)
+            .HasColumnName("is_main")
             .IsRequired();
 
         builder.ToTable(
