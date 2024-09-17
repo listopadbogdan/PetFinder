@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFinder.Domain.Shared;
 using PetFinder.Domain.Shared.Ids;
 using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Models;
@@ -46,22 +45,46 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .IsRequired();
         });
 
-        builder.Property(v => v.Description)
-            .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
-            .IsRequired();
+        builder.ComplexProperty(v => v.Description, cpb =>
+        {
+            cpb.Property(d => d.Value)
+                .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
+                .IsRequired();
+        });
 
         builder.Property(v => v.ExperienceYears)
             .IsRequired();
 
-        builder.OwnsMany(v => v.SocialNetworks)
-            .ToJson();
+        builder.OwnsMany(v => v.SocialNetworks, snb =>
+        {
+            snb.ToJson();
 
-        builder.OwnsMany(v => v.AssistanceDetails)
-            .ToJson();
+            snb.Property(sn => sn.Title)
+                .HasMaxLength(Constants.SocialNetwork.MaxTitleLength)
+                .IsRequired();
+
+            snb.Property(sn => sn.Url)
+                .HasMaxLength(Constants.SocialNetwork.MaxUrlLength)
+                .IsRequired();
+        });
+
+        builder.OwnsMany(v => v.AssistanceDetails, adb =>
+        {
+            adb.ToJson();
+
+            adb.Property(a => a.Description)
+                .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
+                .IsRequired();
+
+            adb.Property(a => a.Title)
+                .HasMaxLength(Constants.AssistanceDetail.MaxTitleLength)
+                .IsRequired();
+        });
+
 
         builder.HasMany(v => v.Pets)
             .WithOne();
-        
+
         //TODO - resolve problem with UQ index for Volunteer.PhoneNumber
         // builder.HasIndex(Constants.PhoneNumber.ColumnName)
         //     .HasDatabaseName("UQ_Volunteer_phone_number")
