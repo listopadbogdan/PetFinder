@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PetFinder.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,7 +29,7 @@ namespace PetFinder.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     experience_years = table.Column<int>(type: "integer", nullable: false),
-                    description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    description_value = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     email_value = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     person_name_first_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     person_name_last_name = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
