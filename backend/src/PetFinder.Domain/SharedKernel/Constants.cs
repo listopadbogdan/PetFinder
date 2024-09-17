@@ -55,7 +55,7 @@ public static class Constants
     public static class SocialNetwork
     {
         public const int MaxUrlLength = 256;
-        public const int MaxNameLength = 32;
+        public const int MaxTitleLength = 32;
     }
 
     public static class AssistanceDetail
