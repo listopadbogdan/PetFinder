@@ -12,8 +12,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 {
     public void Configure(EntityTypeBuilder<Pet> builder)
     {
-        builder.ToTable("pets");
-
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
@@ -122,6 +120,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.HasMany(p => p.Photos)
             .WithOne()
             .HasForeignKey("pet_id")
+            .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.ToTable(

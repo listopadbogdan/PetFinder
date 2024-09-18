@@ -3,6 +3,7 @@ using FluentValidation;
 using PetFinder.Application.Extensions;
 using PetFinder.Domain.Shared;
 using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.Shared.ValueObjects;
 using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Models;
 using PetFinder.Domain.Volunteer.ValueObjects;
@@ -53,8 +54,8 @@ public class CreateVolunteerHandler(
             personName,
             phoneNumber,
             email,
-            socialNetworks: socialNetworks,
-            assistanceDetails: assistanceDetails,
+            socialNetworks: new ValueObjectList<SocialNetwork>(socialNetworks),
+            assistanceDetails: new ValueObjectList<AssistanceDetails>(assistanceDetails),
             experienceYears: request.ExperienceYears,
             description: description);
 

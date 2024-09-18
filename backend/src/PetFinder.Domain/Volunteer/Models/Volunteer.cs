@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.Shared.ValueObjects;
 using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Enums;
 using PetFinder.Domain.Volunteer.ValueObjects;
@@ -8,9 +9,7 @@ namespace PetFinder.Domain.Volunteer.Models;
 
 public class Volunteer : SharedKernel.Entity<VolunteerId>
 {
-    private readonly List<AssistanceDetails> _assistanceDetails;
-    private readonly List<Pet> _pets;
-    private readonly List<SocialNetwork> _socialNetworks;
+    private readonly List<Pet> _pets = default!;
 
     private Volunteer(VolunteerId id)
         : base(id)
@@ -24,16 +23,16 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
         Email email,
         int experienceYears,
         VolunteerDescription description,
-        IEnumerable<SocialNetwork>? socialNetworks,
-        IEnumerable<AssistanceDetails>? assistanceDetails) : base(id)
+        ValueObjectList<SocialNetwork> socialNetworks,
+        ValueObjectList<AssistanceDetails> assistanceDetails) : base(id)
     {
         PersonName = personName;
         PhoneNumber = phoneNumber;
         ExperienceYears = experienceYears;
         Description = description;
         Email = email;
-        _socialNetworks = socialNetworks?.ToList() ?? [];
-        _assistanceDetails = assistanceDetails?.ToList() ?? [];
+        SocialNetworks = socialNetworks;
+        AssistanceDetails = assistanceDetails;
         _pets = [];
     }
 
@@ -42,8 +41,8 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
     public int ExperienceYears { get; private set; }
     public VolunteerDescription Description { get; private set; } = default!;
     public Email Email { get; private set; } = default!;
-    public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
-    public IReadOnlyList<AssistanceDetails> AssistanceDetails => _assistanceDetails;
+    public ValueObjectList<SocialNetwork> SocialNetworks { get; private set; } = default!;
+    public ValueObjectList<AssistanceDetails> AssistanceDetails { get; private set; } = default!;
     public IReadOnlyList<Pet> Pets => _pets;
 
     public int PetsFoundHomeCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.FoundHome);
@@ -57,18 +56,18 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
         Email email,
         int experienceYears,
         VolunteerDescription description,
-        IEnumerable<SocialNetwork>? socialNetworks = default,
-        IEnumerable<AssistanceDetails>? assistanceDetails = null)
+        ValueObjectList<SocialNetwork> socialNetworks,
+        ValueObjectList<AssistanceDetails> assistanceDetails)
     {
         return new Volunteer(
-            id,
-            personName,
-            phoneNumber,
-            email,
-            experienceYears,
-            description,
-            socialNetworks?.ToList(),
-            assistanceDetails?.ToList()
+            id: id,
+            personName: personName,
+            phoneNumber: phoneNumber,
+            email: email,
+            experienceYears: experienceYears,
+            description: description,
+            socialNetworks: socialNetworks,
+            assistanceDetails: assistanceDetails
         );
     }
 }

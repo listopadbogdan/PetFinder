@@ -62,36 +62,46 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .HasColumnName("experience_years")
             .IsRequired();
 
-        builder.OwnsMany(v => v.SocialNetworks, snb =>
+        builder.OwnsOne(v => v.SocialNetworks, snb =>
         {
             snb.ToJson("social_networks");
 
-            snb.Property(sn => sn.Title)
-                .HasMaxLength(Constants.SocialNetwork.MaxTitleLength)
-                .IsRequired();
+            snb.OwnsMany(voList => voList.Values, sn =>
+            {
+                sn.Property(p => p.Title)
+                    .HasColumnName("title")
+                    .HasMaxLength(Constants.SocialNetwork.MaxTitleLength)
+                    .IsRequired();
 
-            snb.Property(sn => sn.Url)
-                .HasMaxLength(Constants.SocialNetwork.MaxUrlLength)
-                .IsRequired();
+                sn.Property(p => p.Url)
+                    .HasColumnName("url")
+                    .HasMaxLength(Constants.SocialNetwork.MaxUrlLength)
+                    .IsRequired();
+            });
         });
 
-        builder.OwnsMany(v => v.AssistanceDetails, adb =>
+        builder.OwnsOne(v => v.AssistanceDetails, adb =>
         {
             adb.ToJson("assistance_details");
 
-            adb.Property(a => a.Description)
-                .HasMaxLength(Constants.Volunteer.MaxDescriptionLength)
-                .IsRequired();
+            adb.OwnsMany(voList => voList.Values, ad =>
+            {
+                ad.Property(p => p.Title)
+                    .HasColumnName("title")
+                    .HasMaxLength(Constants.AssistanceDetail.MaxTitleLength)
+                    .IsRequired();
 
-            adb.Property(a => a.Title)
-                .HasMaxLength(Constants.AssistanceDetail.MaxTitleLength)
-                .IsRequired();
+                ad.Property(p => p.Description)
+                    .HasColumnName("description")
+                    .HasMaxLength(Constants.AssistanceDetail.MaxDescriptionLength)
+                    .IsRequired();
+            });
         });
-
-
+        
         builder.HasMany(v => v.Pets)
             .WithOne()
             .HasForeignKey("volunteer_id")
+            .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
         //TODO - resolve problem with UQ index for Volunteer.PhoneNumber
