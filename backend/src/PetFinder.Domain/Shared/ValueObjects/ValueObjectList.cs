@@ -13,7 +13,7 @@ public record ValueObjectList<T> : IReadOnlyList<T>
         Values = values.ToList().AsReadOnly();
     }
 
-    public IReadOnlyList<T> Values { get; } = default!;
+    public IReadOnlyList<T> Values { get; }
 
     public int Count => Values.Count;
 
