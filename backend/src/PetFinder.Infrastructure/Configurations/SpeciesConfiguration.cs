@@ -21,9 +21,11 @@ public class SpeciesConfiguration: IEntityTypeConfiguration<Species>
                 value => SpeciesId.Create(value));
 
         builder.HasMany(s => s.Breeds)
-            .WithOne(b => b.Species);
+            .WithOne(b => b.Species)
+            .HasForeignKey("species_id");
 
         builder.Property(s => s.Title)
+            .HasColumnName("title")
             .HasMaxLength(Constants.Species.MaxTitleLength)
             .IsRequired();
     }

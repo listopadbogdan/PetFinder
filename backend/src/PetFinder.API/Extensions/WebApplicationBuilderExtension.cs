@@ -3,12 +3,12 @@ using PetFinder.Infrastructure;
 
 namespace PetFinder.API.Extensions;
 
-public static class WebApplicationBuilderExtension 
+public static class WebApplicationBuilderExtension
 {
     public static WebApplicationBuilder Configure(this WebApplicationBuilder builder)
     {
         builder.ConfigureServices();
-        
+
         return builder;
     }
 
@@ -21,7 +21,7 @@ public static class WebApplicationBuilderExtension
         builder.Services
             .AddInfrastructure()
             .AddApplication();
-        
+
         return builder;
     }
 }

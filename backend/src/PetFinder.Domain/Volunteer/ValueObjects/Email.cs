@@ -28,7 +28,7 @@ public record Email
         return new Email(value: value);
     }
 
-    private static UnitResult<Error> Validate(string value)
+    public static UnitResult<Error> Validate(string value)
     {
         if (string.IsNullOrWhiteSpace(value) || !ValidationRegex.IsMatch(value))
             return Errors.General.ValueIsInvalid(nameof(Email), $"is not match pattern {ValidationRegexPattern}");

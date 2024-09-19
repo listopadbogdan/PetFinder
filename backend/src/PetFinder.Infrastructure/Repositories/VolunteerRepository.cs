@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using PetFinder.Application.Features;
-using PetFinder.Domain.Shared;
 using PetFinder.Domain.Shared.Ids;
 using PetFinder.Domain.Volunteer.Models;
 using PetFinder.Domain.Volunteer.ValueObjects;
@@ -27,35 +26,35 @@ public class VolunteerRepository(ApplicationDbContext dbContext) : IVolunteerRep
             v => v.Id == volunteerId,
             cancellationToken);
 
-        return volunteer is null 
+        return volunteer is null
             ? Result.Failure<Volunteer>("Not not found")
             : Result.Success(volunteer);
     }
 
     public async Task<Result<Volunteer>> GetByEmail(Email email,
-        CancellationToken cancellationToken  = default)
+        CancellationToken cancellationToken = default)
     {
         var volunteer = await GetBy(
             v => v.Email == email,
             cancellationToken);
 
-        return volunteer is null 
+        return volunteer is null
             ? Result.Failure<Volunteer>("Not not found")
             : Result.Success(volunteer);
     }
-    
-    public async Task<Result<Volunteer>> GetByPhoneNumber(PhoneNumber phoneNumber, 
-        CancellationToken cancellationToken  = default)
+
+    public async Task<Result<Volunteer>> GetByPhoneNumber(PhoneNumber phoneNumber,
+        CancellationToken cancellationToken = default)
     {
         var volunteer = await GetBy(
             v => v.PhoneNumber == phoneNumber,
             cancellationToken);
 
-        return volunteer is null 
+        return volunteer is null
             ? Result.Failure<Volunteer>("Not not found")
             : Result.Success(volunteer);
     }
-    
+
 
     private Task<Volunteer?> GetBy(Expression<Func<Volunteer, bool>> expression,
         CancellationToken cancellationToken)

@@ -1,83 +1,69 @@
 using CSharpFunctionalExtensions;
+using FluentValidation;
+using PetFinder.Application.Extensions;
 using PetFinder.Domain.Shared;
 using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.Shared.ValueObjects;
 using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Models;
 using PetFinder.Domain.Volunteer.ValueObjects;
 
 namespace PetFinder.Application.Features;
 
-public class CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
+public class CreateVolunteerHandler(
+    IVolunteerRepository volunteerRepository,
+    IValidator<CreateVolunteerRequest> validator)
 {
-    public async Task<Result<Guid, Error>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
-        var emailResult = Email.Create(request.Email);
-        if (emailResult.IsFailure)
-            return emailResult.Error;
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            return validationResult.Errors.ToList();
 
-        if ((await volunteerRepository.GetByEmail(emailResult.Value, cancellationToken)).IsSuccess)
-            return Errors.General.RecordWithValueIsNotUnique(nameof(Volunteer), nameof(Email), emailResult.Value);
+        var email = Email.Create(request.Email).Value;
 
-        var phoneNumberResult = PhoneNumber.Create(request.PhoneNumber);
-        if (phoneNumberResult.IsFailure)
-            return phoneNumberResult.Error;
+        if ((await volunteerRepository.GetByEmail(email, cancellationToken)).IsSuccess)
+            return Errors.General.RecordWithValueIsNotUnique(
+                nameof(Volunteer), nameof(Email), email.Value).ToErrorList();
 
-        if ((await volunteerRepository.GetByPhoneNumber(phoneNumberResult.Value, cancellationToken)).IsSuccess)
-            return Errors.General.RecordWithValueIsNotUnique(nameof(Volunteer), nameof(PhoneNumber),
-                phoneNumberResult.Value);
+        var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
 
-        var personNameResult = PersonName.Create(
-            firstName: request.PersonNameDto.FirstName,
-            middleName: request.PersonNameDto.MiddleName,
-            lastName: request.PersonNameDto.LastName);
-        if (personNameResult.IsFailure)
-            return personNameResult.Error;
+        if ((await volunteerRepository.GetByPhoneNumber(phoneNumber, cancellationToken)).IsSuccess)
+            return Errors.General.RecordWithValueIsNotUnique(
+                nameof(Constants.Volunteer), nameof(PhoneNumber), phoneNumber.Value).ToErrorList();
 
-        IEnumerable<Result<SocialNetwork, Error>> socialNetworks = request.SocialNetworkDtos
-            .Select(dto => SocialNetwork.Create(title: dto.Title, url: dto.Url)).ToList();
+        var personName = PersonName.Create(
+            request.PersonNameDto.FirstName,
+            request.PersonNameDto.MiddleName,
+            request.PersonNameDto.LastName).Value;
 
-        if (socialNetworks.Count(sn => sn.IsFailure) > 0)
-        {
-            var sn =  socialNetworks.First(sn => sn.IsFailure);
-            return sn.Error;
-        }
+        var description = VolunteerDescription.Create(request.Description).Value;
 
-        IEnumerable<Result<AssistanceDetails, Error>> assistanceDetails = request.AssistanceDetailsDtos
-            .Select(dto => AssistanceDetails.Create(title: dto.Title, description: dto.Description)).ToList();
+        IEnumerable<SocialNetwork> socialNetworks = request.SocialNetworkDtos
+            .Select(dto => SocialNetwork.Create(dto.Title, dto.Url).Value).ToList();
 
-        if (assistanceDetails.Count(ad => ad.IsFailure) > 0)
-        {
-            var ad = assistanceDetails.First(ad => ad.IsFailure);
-            return ad.Error;
-        };
+        IEnumerable<AssistanceDetails> assistanceDetails = request.AssistanceDetailsDtos
+            .Select(dto => AssistanceDetails.Create(dto.Title, dto.Description).Value).ToList();
 
         var volunteerId = VolunteerId.New();
 
         var createVolunteerResult = Volunteer.Create(
             id: volunteerId,
-            personName: personNameResult.Value,
-            phoneNumber: phoneNumberResult.Value,
-            email: emailResult.Value,
-            socialNetworks: socialNetworks.UnwrapFromResultToValue(),
-            assistanceDetails: assistanceDetails.UnwrapFromResultToValue(),
+            personName: personName,
+            phoneNumber: phoneNumber,
+            email: email,
+            socialNetworks: new ValueObjectList<SocialNetwork>(socialNetworks),
+            assistanceDetails: new ValueObjectList<AssistanceDetails>(assistanceDetails),
             experienceYears: request.ExperienceYears,
-            description: request.Description);
+            description: description);
 
         if (createVolunteerResult.IsFailure)
-            return createVolunteerResult.Error;
+            return createVolunteerResult.Error.ToErrorList();
 
         await volunteerRepository.Add(createVolunteerResult.Value, cancellationToken);
+
         return volunteerId.Value;
     }
-}
-
-public static class ResultExtensions
-{
-    public static IEnumerable<T> UnwrapFromResultToValue<T>(this IEnumerable<Result<T>> collections)
-        => collections.Select(c => c.Value);
-
-    public static IEnumerable<T> UnwrapFromResultToValue<T, TE>(this IEnumerable<Result<T, TE>> collections)
-        => collections.Select(c => c.Value);
 }

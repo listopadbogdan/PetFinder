@@ -1,5 +1,4 @@
 using CSharpFunctionalExtensions;
-using PetFinder.Domain.Shared;
 using PetFinder.Domain.SharedKernel;
 
 namespace PetFinder.Domain.Volunteer.ValueObjects;
@@ -22,25 +21,25 @@ public record SocialNetwork
     public static Result<SocialNetwork, Error> Create(string title, string url)
     {
         var validationResult = Validate(
-            name: title,
-            url: url);
+            title,
+            url);
 
         if (validationResult.IsFailure)
             return validationResult.Error;
 
         return new SocialNetwork(
-            title: title,
-            url: url);
+            title,
+            url);
     }
 
-    private static UnitResult<Error> Validate(string name, string url)
+    public static UnitResult<Error> Validate(string title, string url)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > Constants.SocialNetwork.MaxNameLength)
+        if (string.IsNullOrWhiteSpace(title) || title.Length > Constants.SocialNetwork.MaxTitleLength)
             return Errors.General.ValueIsInvalid(
                 nameof(Title),
-                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.SocialNetwork.MaxNameLength));
+                StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.SocialNetwork.MaxTitleLength));
 
-        if (string.IsNullOrWhiteSpace(url) || name.Length > Constants.SocialNetwork.MaxUrlLength)
+        if (string.IsNullOrWhiteSpace(url) || title.Length > Constants.SocialNetwork.MaxUrlLength)
             return Errors.General.ValueIsInvalid(
                 nameof(Url),
                 StringHelper.GetValueEmptyOrMoreThanNeedString(Constants.SocialNetwork.MaxUrlLength));
