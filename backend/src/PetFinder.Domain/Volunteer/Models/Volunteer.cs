@@ -9,7 +9,7 @@ namespace PetFinder.Domain.Volunteer.Models;
 
 public class Volunteer : SharedKernel.Entity<VolunteerId>
 {
-    private readonly List<Pet> _pets;
+    private readonly List<Pet> _pets = default!;
 
     private Volunteer(VolunteerId id)
         : base(id)

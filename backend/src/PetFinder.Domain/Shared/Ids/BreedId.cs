@@ -1,6 +1,6 @@
 namespace PetFinder.Domain.Shared.Ids;
 
-public class BreedId
+public record BreedId
 {
     public Guid Value { get; }
 

@@ -21,12 +21,6 @@ public static class ResponseExtensions
 
     public static ActionResult ToResponse(this ErrorList errors)
     {
-        if (errors.Any())
-            return new ObjectResult(Envelope.Error(errors))
-            {
-                StatusCode = StatusCodes.Status500InternalServerError
-            };
-
         var distinctErrorTypes = errors
             .Select(x => x.ErrorType)
             .Distinct()
