@@ -7,7 +7,7 @@ public static class Errors
         public static Error ValueIsInvalid(string? valueName = default, string? description = default) =>
             Error.Validation(
                 ErrorCodes.ValueIsInvalid,
-                string.IsNullOrWhiteSpace(description)
+                !string.IsNullOrWhiteSpace(description)
                     ? $"{valueName ?? "value"} is invalid - {description}"
                     : $"{valueName ?? "value"} is invalid");
 

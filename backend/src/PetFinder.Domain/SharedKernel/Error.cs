@@ -5,7 +5,7 @@ namespace PetFinder.Domain.SharedKernel;
 public class Error
 {
     // ReSharper disable once InconsistentNaming
-    private const string Separator = "|";
+    private const string Separator = "|||";
 
     private Error(
         string code,

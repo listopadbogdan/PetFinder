@@ -36,6 +36,7 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest
 
         RuleFor(request => request.ExperienceYears).GreaterThanOrEqualTo(0)
             .WithError(Errors.General.ValueIsInvalid(
-                nameof(CreateVolunteerRequest.ExperienceYears), "Must be greater or equal to zero."));
+                nameof(CreateVolunteerRequest.ExperienceYears),
+                "Must be greater or equal to zero."));
     }
 }
