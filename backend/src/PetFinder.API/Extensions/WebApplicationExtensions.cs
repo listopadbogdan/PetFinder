@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using PetFinder.API.Middlewares;
 using PetFinder.Infrastructure;
+using Serilog;
 
 namespace PetFinder.API.Extensions;
 
@@ -10,10 +12,10 @@ public static class WebApplicationExtensions
         await app.ConfigureEnvironmentAsync();
 
         app.UseHttpLogging();
-        app.MapControllers();
         app.UseHttpsRedirection();
+        
+        app.MapControllers();
     }
-
     private static async Task ConfigureEnvironmentAsync(this WebApplication app)
     {
         if (app.Environment.IsDevelopment()) 
@@ -25,9 +27,13 @@ public static class WebApplicationExtensions
         if (!app.Environment.IsDevelopment())
             throw new InvalidOperationException("Environment is not development");
 
+        app.UseExceptionMiddleware();
+        
         app.UseSwagger();
         app.UseSwaggerUI();
 
+        app.UseSerilogRequestLogging();
+        
         await app.ApplyMigrations();
     }
  
