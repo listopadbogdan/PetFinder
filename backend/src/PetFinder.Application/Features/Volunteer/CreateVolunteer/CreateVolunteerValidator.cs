@@ -1,5 +1,6 @@
 using FluentValidation;
 using PetFinder.Application.Extensions;
+using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.ValueObjects;
 
 namespace PetFinder.Application.Features;
@@ -33,6 +34,9 @@ public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest
                 dto.Description)
             );
 
-        RuleFor(request => request.ExperienceYears).Must(ey => ey >= 0);
+        RuleFor(request => request.ExperienceYears).GreaterThanOrEqualTo(0)
+            .WithError(Errors.General.ValueIsInvalid(
+                nameof(CreateVolunteerRequest.ExperienceYears),
+                "Must be greater or equal to zero."));
     }
 }

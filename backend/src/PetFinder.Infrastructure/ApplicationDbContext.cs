@@ -23,7 +23,8 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(_configuration.GetConnectionString("Application"))
+        optionsBuilder.UseNpgsql(_configuration.GetConnectionString("ApplicationDbContext")
+                                 ?? throw new InvalidOperationException("No connection string for ApplicationDbContext"))
             .UseSnakeCaseNamingConvention()
             .UseLoggerFactory(CreateLoggerFactory())
             .EnableSensitiveDataLogging();

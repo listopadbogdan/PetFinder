@@ -12,8 +12,11 @@ public class VolunteerController : ControllerBase
     public async Task<IActionResult> Create(
         [FromServices] CreateVolunteerHandler handler,
         [FromBody] CreateVolunteerRequest createVolunteerRequest,
+        [FromServices] ILogger<VolunteerController> logger,
         CancellationToken cancellationToken = default)
     {
+        // TODO Для теста
+        logger.LogError("Creating volunteer");
         var result = await handler.Handle(createVolunteerRequest, cancellationToken);
 
         return result.IsFailure

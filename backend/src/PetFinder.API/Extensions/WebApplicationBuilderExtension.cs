@@ -17,6 +17,13 @@ public static class WebApplicationBuilderExtension
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        
+        builder.Services.ConfigureLogging(builder.Configuration);
+        
+        builder.Services.AddHttpLogging(configureOptions =>
+        {
+            configureOptions.CombineLogs = true;
+        });
 
         builder.Services
             .AddInfrastructure()
@@ -24,4 +31,5 @@ public static class WebApplicationBuilderExtension
 
         return builder;
     }
+    
 }
