@@ -18,8 +18,8 @@
     environment:
       - ACCEPT_EULA=Y
     ports:
-      - 5341:5341
-      - 5340:80
+      - "5341:5341"
+      - "5340:80"
 
 
 volumes:

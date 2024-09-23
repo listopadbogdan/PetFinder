@@ -11,7 +11,7 @@ public static class WebApplicationExtensions
     {
         await app.ConfigureEnvironmentAsync();
 
-        app.UseHttpLogging();
+        app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
         
         app.MapControllers();
@@ -32,7 +32,6 @@ public static class WebApplicationExtensions
         app.UseSwagger();
         app.UseSwaggerUI();
 
-        app.UseSerilogRequestLogging();
         
         await app.ApplyMigrations();
     }

@@ -10,7 +10,7 @@ public static class ServiceCollectionExtension
     public static IServiceCollection ConfigureLogging(this IServiceCollection services, 
         IConfiguration configuration)
     {
-        var logger = new LoggerConfiguration()
+        Log.Logger = new LoggerConfiguration()
             .WriteTo.Seq(configuration.GetConnectionString("Seq")
                          ?? throw new InvalidOperationException("No connection string for Seq"))
             .WriteTo.Console()
@@ -22,7 +22,7 @@ public static class ServiceCollectionExtension
             .Enrich.WithThreadId()
             .CreateLogger();
         
-        services.AddSerilog(logger);
+        services.AddSerilog();
         
         return services;
     }
