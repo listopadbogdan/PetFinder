@@ -1,6 +1,4 @@
-using Microsoft.CodeAnalysis.Options;
 using Serilog;
-using Serilog.Core;
 using Serilog.Events;
 
 namespace PetFinder.API.Extensions;

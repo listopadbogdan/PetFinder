@@ -3,7 +3,7 @@ using PetFinder.Domain.SharedKernel;
 
 namespace PetFinder.Domain.Shared.ValueObjects;
 
-public abstract record NotEmptyStringValueObject
+public abstract record  NotEmptyStringValueObject
 {
     private NotEmptyStringValueObject()
     {

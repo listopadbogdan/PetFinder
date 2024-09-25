@@ -15,8 +15,6 @@ public class VolunteerController : ControllerBase
         [FromServices] ILogger<VolunteerController> logger,
         CancellationToken cancellationToken = default)
     {
-        // TODO Для теста
-        logger.LogError("Creating volunteer");
         var result = await handler.Handle(createVolunteerRequest, cancellationToken);
 
         return result.IsFailure

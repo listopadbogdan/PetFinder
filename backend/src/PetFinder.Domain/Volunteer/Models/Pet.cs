@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFinder.Domain.Shared;
 using PetFinder.Domain.Shared.Ids;
 using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Enums;
