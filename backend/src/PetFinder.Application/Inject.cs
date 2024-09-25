@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PetFinder.Application.Features;
+using PetFinder.Application.Features.Shared;
 
 namespace PetFinder.Application;
 
@@ -17,7 +18,8 @@ public static class Inject
 
     private static IServiceCollection AddHandlers(this IServiceCollection services)
     {
-        services.AddScoped<CreateVolunteerHandler>();
+        // services.AddScoped<CreateVolunteerHandler>();
+        services.LoadHandlersFromAssembly();
 
         return services;
     }
