@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
-using PetFinder.Domain.Shared;
 using PetFinder.Domain.SharedKernel;
 
 namespace PetFinder.Domain.Volunteer.ValueObjects;

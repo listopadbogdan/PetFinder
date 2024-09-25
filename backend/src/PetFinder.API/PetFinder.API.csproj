@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\PetFinder.Application\PetFinder.Application.csproj"/>
         <ProjectReference Include="..\PetFinder.Infrastructure\PetFinder.Infrastructure.csproj"/>
     </ItemGroup>
 
