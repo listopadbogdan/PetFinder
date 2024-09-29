@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFinder.API.Extensions;
 using PetFinder.Application.Features;
+using PetFinder.Application.Features.UpdateMainInfo;
 
 namespace PetFinder.API.Controllers;
 
@@ -16,6 +17,23 @@ public class VolunteerController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(createVolunteerRequest, cancellationToken);
+
+        return result.IsFailure
+            ? result.Error.ToResponse()
+            : Ok(result.Value);
+    }
+
+    [HttpPatch("{id:guid}/main-info")]
+    public async Task<IActionResult> Update(
+        [FromRoute] Guid id,
+        [FromBody] UpdateVolunteerMainInfoDto dto,
+        [FromServices] UpdateVolunteerMainInfoHandler handler,
+        [FromServices] ILogger<VolunteerController> logger,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new UpdateVolunteerMainInfoRequest(id, dto);
+
+        var result = await handler.Handle(request, cancellationToken);
 
         return result.IsFailure
             ? result.Error.ToResponse()
