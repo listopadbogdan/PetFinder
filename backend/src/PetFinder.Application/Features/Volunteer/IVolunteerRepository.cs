@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Models;
 using PetFinder.Domain.Volunteer.ValueObjects;
 
@@ -10,6 +11,7 @@ public interface IVolunteerRepository
     Task<VolunteerId> Add(Volunteer volunteer,
         CancellationToken cancellationToken);
 
+
     Task<Result<Volunteer>> GetById(VolunteerId volunteerId,
         CancellationToken cancellationToken);
 
@@ -18,4 +20,12 @@ public interface IVolunteerRepository
 
     Task<Result<Volunteer>> GetByPhoneNumber(PhoneNumber phoneNumber,
         CancellationToken cancellationToken);
+
+    public Task<bool> CheckPhoneNumberForExists(PhoneNumber phoneNumber,
+        CancellationToken cancellationToken = default);
+    
+    public Task<bool> CheckEmailForExists(Email email,
+        CancellationToken cancellationToken = default);
+    void Save(Volunteer volunteer);
+    public Task SaveChanges(CancellationToken cancellationToken);
 }
