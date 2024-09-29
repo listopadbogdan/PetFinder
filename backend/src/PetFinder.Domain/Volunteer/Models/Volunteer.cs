@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using CSharpFunctionalExtensions;
 using PetFinder.Domain.Shared.Ids;
 using PetFinder.Domain.Shared.ValueObjects;
@@ -49,6 +50,20 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
     public int PetsLookingForHomeCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.LookingForHome);
     public int PetsOnTreatmentCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.OnTreatment);
 
+    public void UpdateMainInfo(
+        PersonName personName,
+        PhoneNumber phoneNumber,
+        Email email,
+        VolunteerDescription description,
+        int experienceYears)
+    {
+        PersonName = personName;
+        PhoneNumber = phoneNumber;
+        Email = email;
+        Description = description;
+        ExperienceYears = experienceYears;
+    }
+
     public static Result<Volunteer, Error> Create(
         VolunteerId id,
         PersonName personName,
@@ -59,6 +74,11 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
         ValueObjectList<SocialNetwork> socialNetworks,
         ValueObjectList<AssistanceDetails> assistanceDetails)
     {
+        if (experienceYears < Constants.Volunteer.MinExperienceYears)
+            return Errors.General.ValueIsInvalid(
+                nameof(experienceYears),
+                $"Must be more or equal to {Constants.Volunteer.MinExperienceYears}");
+        
         return new Volunteer(
             id: id,
             personName: personName,
@@ -70,4 +90,10 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
             assistanceDetails: assistanceDetails
         );
     }
+    
+    public static UnitResult<Error> ValidateExperienceYears(int experienceYears) 
+        => UnitResult.FailureIf(experienceYears < Constants.Volunteer.MinExperienceYears,
+            Errors.General.ValueIsInvalid(
+                nameof(ExperienceYears),
+                $"Must be more or equal to {Constants.Volunteer.MinExperienceYears}"));
 }
