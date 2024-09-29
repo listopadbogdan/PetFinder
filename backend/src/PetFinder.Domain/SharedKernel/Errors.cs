@@ -14,6 +14,8 @@ public static class Errors
         public static Error ValueIsRequired(string? valueName = default)
             => Error.Validation(ErrorCodes.ValueIsRequired, $"{valueName ?? "value"} is required");
 
+        public static Error ValueIsNotUnique(string? valueName = default)
+            => Error.Conflict(ErrorCodes.ValueIsNotUnique, $"{valueName ?? "value"} is not unique"); 
         public static Error RecordNotFound(string? recordName = default, Guid? id = default)
             => Error.Validation(ErrorCodes.RecordNotFound, $"{recordName ?? "record"} by id {id} not found");
 
