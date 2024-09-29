@@ -1,14 +1,8 @@
-using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PetFinder.Application.Features.Shared;
+namespace PetFinder.Application.Features.Shared.Interfaces;
 
-public interface IHandler
-{
-    
-}
-
-public static class HandlerExtensions
+internal static class HandlerExtensions
 {
     public static IServiceCollection LoadHandlersFromAssembly(this IServiceCollection services)
     {
