@@ -23,6 +23,9 @@ public class VolunteerRepository(ApplicationDbContext dbContext) : IVolunteerRep
 
     public void Save(Volunteer volunteer) 
         => _dbContext.Attach(volunteer);
+
+    public void Delete(Volunteer volunteer)
+        => _dbContext.Remove(volunteer);
     
     public async Task SaveChanges(CancellationToken cancellationToken = default)
         => await _dbContext.SaveChangesAsync(cancellationToken);
