@@ -60,7 +60,7 @@ public class PetPhoto :
     {
         EntityAlreadyActivatedException.ThrowIfActivated(!IsDeleted);
 
-        IsDeleted = true;
+        IsDeleted = false;
         DeletedAt = null;
     }
 
@@ -68,7 +68,7 @@ public class PetPhoto :
     {
         EntityAlreadyDeletedException.ThrowIfDeleted(IsDeleted);
 
-        IsDeleted = false;
+        IsDeleted = true;
         DeletedAt = deletedAt;
     }
 }

@@ -62,7 +62,7 @@ public class Volunteer :
     {
         EntityAlreadyActivatedException.ThrowIfActivated(!IsDeleted);
 
-        IsDeleted = true;
+        IsDeleted = false;
         DeletedAt = null;
     }
 
@@ -70,7 +70,7 @@ public class Volunteer :
     {
         EntityAlreadyDeletedException.ThrowIfDeleted(IsDeleted);
 
-        IsDeleted = false;
+        IsDeleted = true;
         DeletedAt = deletedAt;
         
         _pets.ForEach(p => p.Deactivate(deletedAt));
