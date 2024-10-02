@@ -4,9 +4,9 @@ using PetFinder.Domain.SharedKernel;
 
 namespace PetFinder.Application.Extensions;
 
-public static class ValidationExtensions
+internal static class ValidationExtensions
 {
-    public static ErrorList ToList(this IEnumerable<ValidationFailure> validationFailures)
+    public static ErrorList ToErrorList(this IEnumerable<ValidationFailure> validationFailures)
     {
         var errors = validationFailures.Select(
             ve =>

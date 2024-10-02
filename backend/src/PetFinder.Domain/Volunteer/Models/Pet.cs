@@ -1,12 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.Shared.Interfaces;
 using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Enums;
 using PetFinder.Domain.Volunteer.ValueObjects;
 
 namespace PetFinder.Domain.Volunteer.Models;
 
-public class Pet : SharedKernel.Entity<PetId>
+public class Pet : 
+    SharedKernel.Entity<PetId>,
+    ISoftDeletable
 {
     private readonly List<PetPhoto> _photos = default!;
 
@@ -49,6 +52,8 @@ public class Pet : SharedKernel.Entity<PetId>
         HelpStatus = helpStatusPet;
         CreatedAt = createdAt;
         _photos = photos?.ToList() ?? [];
+        DeletedAt = null;
+        IsDeleted = false;  
     }
 
     public SpeciesBreedObject SpeciesBreedObject { get; private set; } = default!;
@@ -68,6 +73,8 @@ public class Pet : SharedKernel.Entity<PetId>
     public HelpStatusPet HelpStatus { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public IReadOnlyList<PetPhoto> Photos => _photos;
+    public bool IsDeleted { get; private set; }
+    public DateTime? DeletedAt { get; private set; }
 
     public static Result<Pet, Error> Create(
         PetId id,
@@ -183,5 +190,25 @@ public class Pet : SharedKernel.Entity<PetId>
                 StringHelper.GetValueLessThanNeedString("now"));
         
         return UnitResult.Success<Error>();
+    }
+
+    public void Activate()
+    {
+        EntityAlreadyActivatedException.ThrowIfActivated(!IsDeleted);
+
+        IsDeleted = false;
+        DeletedAt = null;
+        
+        _photos.ForEach(p => p.Activate());
+    }
+
+    public void Deactivate(DateTime deletedAt)
+    {
+        EntityAlreadyDeletedException.ThrowIfDeleted(IsDeleted);
+
+        IsDeleted = true;
+        DeletedAt = deletedAt;
+        
+        _photos.ForEach(p => p.Deactivate(deletedAt));
     }
 }

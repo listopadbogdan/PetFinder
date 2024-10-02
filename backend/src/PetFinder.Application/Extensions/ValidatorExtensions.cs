@@ -4,7 +4,7 @@ using PetFinder.Domain.SharedKernel;
 
 namespace PetFinder.Application.Extensions;
 
-public static class ValidatorExtensions
+internal static class ValidatorExtensions
 {
     public static IRuleBuilderOptionsConditions<T, TElement> MustBeValueObject<T, TElement>(
         this IRuleBuilder<T, TElement> ruleBuilder,

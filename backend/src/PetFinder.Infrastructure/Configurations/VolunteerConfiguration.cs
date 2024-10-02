@@ -1,8 +1,13 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.Shared.ValueObjects;
 using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Models;
+using PetFinder.Domain.Volunteer.ValueObjects;
+using PetFinder.Infrastructure.Dto;
+using PetFinder.Infrastructure.Extensions;
 
 namespace PetFinder.Infrastructure.Configurations;
 
@@ -61,42 +66,14 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(v => v.ExperienceYears)
             .HasColumnName("experience_years")
             .IsRequired();
+        
+        builder.Property(v => v.AssistanceDetails)
+            .HasDefaultConversionForValueObjectList<AssistanceDetailsDto, AssistanceDetails>(dto => dto.ToValueObjecct())
+            .HasColumnName("assistance_details");
 
-        builder.OwnsOne(v => v.SocialNetworks, snb =>
-        {
-            snb.ToJson("social_networks");
-
-            snb.OwnsMany(voList => voList.Values, sn =>
-            {
-                sn.Property(p => p.Title)
-                    .HasColumnName("title")
-                    .HasMaxLength(Constants.SocialNetwork.MaxTitleLength)
-                    .IsRequired();
-
-                sn.Property(p => p.Url)
-                    .HasColumnName("url")
-                    .HasMaxLength(Constants.SocialNetwork.MaxUrlLength)
-                    .IsRequired();
-            });
-        });
-
-        builder.OwnsOne(v => v.AssistanceDetails, adb =>
-        {
-            adb.ToJson("assistance_details");
-
-            adb.OwnsMany(voList => voList.Values, ad =>
-            {
-                ad.Property(p => p.Title)
-                    .HasColumnName("title")
-                    .HasMaxLength(Constants.AssistanceDetail.MaxTitleLength)
-                    .IsRequired();
-
-                ad.Property(p => p.Description)
-                    .HasColumnName("description")
-                    .HasMaxLength(Constants.AssistanceDetail.MaxDescriptionLength)
-                    .IsRequired();
-            });
-        });
+        builder.Property(v => v.SocialNetworks)
+            .HasDefaultConversionForValueObjectList<SocialNetworkDto, SocialNetwork>(dto => dto.ToValueObject())
+            .HasColumnName("social_networks");
         
         builder.HasMany(v => v.Pets)
             .WithOne()
@@ -112,5 +89,8 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ToTable(
             Constants.Volunteer.TableName,
             t => { t.HasCheckConstraint("CK_Volunteer_experience_years", "\"experience_years\" >= 0"); });
+
+
+        builder.HasQueryFilter(v => v.IsDeleted == false);
     }
 }

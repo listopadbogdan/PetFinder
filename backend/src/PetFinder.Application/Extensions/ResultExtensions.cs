@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PetFinder.Application.Extensions;
 
-public static class ResultExtensions
+internal static class ResultExtensions
 {
     public static IEnumerable<T> UnwrapFromResultToValue<T>(this IEnumerable<Result<T>> collections)
     {

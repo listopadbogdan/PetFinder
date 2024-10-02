@@ -1,4 +1,4 @@
-using PetFinder.Application.Dto;
+using PetFinder.Application.Features.Shared.Dto;
 
 namespace PetFinder.Application.Features;
 

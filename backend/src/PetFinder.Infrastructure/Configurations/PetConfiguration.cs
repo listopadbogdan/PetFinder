@@ -128,5 +128,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 t.HasCheckConstraint("CK_Pet_weight", "\"weight\" > 0");
                 t.HasCheckConstraint("CK_Pet_height", "\"height\" > 0");
             });
+        
+        builder.HasQueryFilter(pet => pet.IsDeleted == false);
     }
 }

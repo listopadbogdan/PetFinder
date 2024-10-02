@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFinder.Application.Extensions;
-using PetFinder.Application.Features.Shared;
+using PetFinder.Application.Features.Shared.Interfaces;
 using PetFinder.Domain.Shared;
 using PetFinder.Domain.Shared.Ids;
 using PetFinder.Domain.Shared.ValueObjects;
@@ -23,7 +23,7 @@ public class CreateVolunteerHandler(
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
-            return validationResult.Errors.ToList();
+            return validationResult.Errors.ToErrorList();
 
         var email = Email.Create(request.Email).Value;
 
@@ -66,9 +66,9 @@ public class CreateVolunteerHandler(
             return createVolunteerResult.Error.ToErrorList();
 
         await volunteerRepository.Add(createVolunteerResult.Value, cancellationToken);
-        
+
         logger.LogInformation("Volunteer with {id} created successfully.", volunteerId.Value);
-        
+
         return volunteerId.Value;
     }
 }

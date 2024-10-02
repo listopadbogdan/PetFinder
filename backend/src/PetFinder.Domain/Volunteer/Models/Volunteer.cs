@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using PetFinder.Domain.Shared.Ids;
+using PetFinder.Domain.Shared.Interfaces;
 using PetFinder.Domain.Shared.ValueObjects;
 using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Enums;
@@ -7,7 +8,10 @@ using PetFinder.Domain.Volunteer.ValueObjects;
 
 namespace PetFinder.Domain.Volunteer.Models;
 
-public class Volunteer : SharedKernel.Entity<VolunteerId>
+public class Volunteer :
+    SharedKernel.Entity<VolunteerId>,
+    ISoftDeletable
+    
 {
     private readonly List<Pet> _pets = default!;
 
@@ -34,6 +38,8 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
         SocialNetworks = socialNetworks;
         AssistanceDetails = assistanceDetails;
         _pets = [];
+        DeletedAt = null;
+        IsDeleted = false;
     }
 
     public PersonName PersonName { get; private set; } = default!;
@@ -49,6 +55,43 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
     public int PetsLookingForHomeCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.LookingForHome);
     public int PetsOnTreatmentCount => Pets.Count(p => p.HelpStatus == HelpStatusPet.OnTreatment);
 
+    public bool IsDeleted { get; private set; }
+    public DateTime? DeletedAt { get; private set; }
+
+    public void Activate()
+    {
+        EntityAlreadyActivatedException.ThrowIfActivated(!IsDeleted);
+
+        IsDeleted = false;
+        DeletedAt = null;
+    }
+
+    public void Deactivate(DateTime deletedAt)
+    {
+        EntityAlreadyDeletedException.ThrowIfDeleted(IsDeleted);
+
+        IsDeleted = true;
+        DeletedAt = deletedAt;
+        
+        _pets.ForEach(p => p.Deactivate(deletedAt));
+    }
+
+
+    public void UpdateMainInfo(
+        PersonName personName,
+        PhoneNumber phoneNumber,
+        Email email,
+        VolunteerDescription description,
+        int experienceYears)
+    {
+        PersonName = personName;
+        PhoneNumber = phoneNumber;
+        Email = email;
+        Description = description;
+        ExperienceYears = experienceYears;
+    }
+    
+    
     public static Result<Volunteer, Error> Create(
         VolunteerId id,
         PersonName personName,
@@ -59,6 +102,11 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
         ValueObjectList<SocialNetwork> socialNetworks,
         ValueObjectList<AssistanceDetails> assistanceDetails)
     {
+        if (experienceYears < Constants.Volunteer.MinExperienceYears)
+            return Errors.General.ValueIsInvalid(
+                nameof(experienceYears),
+                $"Must be more or equal to {Constants.Volunteer.MinExperienceYears}");
+
         return new Volunteer(
             id: id,
             personName: personName,
@@ -70,4 +118,10 @@ public class Volunteer : SharedKernel.Entity<VolunteerId>
             assistanceDetails: assistanceDetails
         );
     }
+
+    public static UnitResult<Error> ValidateExperienceYears(int experienceYears)
+        => UnitResult.FailureIf(experienceYears < Constants.Volunteer.MinExperienceYears,
+            Errors.General.ValueIsInvalid(
+                nameof(ExperienceYears),
+                $"Must be more or equal to {Constants.Volunteer.MinExperienceYears}"));
 }
