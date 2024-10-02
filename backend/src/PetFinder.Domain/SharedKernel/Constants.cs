@@ -16,6 +16,7 @@ public static class Constants
         public const int MaxMiddleNameLength = 32;
         public const int MaxLastNameLength = 32;
         public const int MaxDescriptionLength = 256;
+        public const int MinExperienceYears = 0;
         public const string TableName = "volunteers";
     }
 

@@ -1,3 +1,3 @@
-namespace PetFinder.Application.Dto;
+namespace PetFinder.Application.Features.Shared.Dto;
 
 public record PersonNameDto(string FirstName, string MiddleName, string LastName);
