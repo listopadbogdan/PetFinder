@@ -1,6 +1,5 @@
 using FluentValidation;
 using PetFinder.Application.Extensions;
-using PetFinder.Domain.SharedKernel;
 using PetFinder.Domain.Volunteer.Models;
 using PetFinder.Domain.Volunteer.ValueObjects;
 

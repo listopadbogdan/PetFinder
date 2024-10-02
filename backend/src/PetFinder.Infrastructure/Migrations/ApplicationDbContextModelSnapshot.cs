@@ -84,8 +84,8 @@ namespace PetFinder.Infrastructure.Migrations
                         .HasColumnType("character varying(64)")
                         .HasColumnName("animal_type");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date")
                         .HasColumnName("birth_date");
 
                     b.Property<string>("Color")
@@ -97,6 +97,10 @@ namespace PetFinder.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
 
                     b.Property<string>("GeneralDescription")
                         .IsRequired()
@@ -121,6 +125,10 @@ namespace PetFinder.Infrastructure.Migrations
                     b.Property<bool>("IsCastrated")
                         .HasColumnType("boolean")
                         .HasColumnName("is_castrated");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsVaccinated")
                         .HasColumnType("boolean")
@@ -213,6 +221,14 @@ namespace PetFinder.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.Property<bool>("IsMain")
                         .HasColumnType("boolean")
                         .HasColumnName("is_main");
@@ -242,9 +258,27 @@ namespace PetFinder.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("AssistanceDetails")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("assistance_details");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
                     b.Property<int>("ExperienceYears")
                         .HasColumnType("integer")
                         .HasColumnName("experience_years");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("SocialNetworks")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("social_networks");
 
                     b.ComplexProperty<Dictionary<string, object>>("Description", "PetFinder.Domain.Volunteer.Models.Volunteer.Description#VolunteerDescription", b1 =>
                         {
@@ -252,7 +286,6 @@ namespace PetFinder.Infrastructure.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .ValueGeneratedOnUpdateSometimes()
                                 .HasMaxLength(256)
                                 .HasColumnType("character varying(256)")
                                 .HasColumnName("description");
@@ -341,118 +374,6 @@ namespace PetFinder.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_pet_photos_pets_pet_id");
-                });
-
-            modelBuilder.Entity("PetFinder.Domain.Volunteer.Models.Volunteer", b =>
-                {
-                    b.OwnsOne("PetFinder.Domain.Shared.ValueObjects.ValueObjectList<PetFinder.Domain.Volunteer.ValueObjects.AssistanceDetails>", "AssistanceDetails", b1 =>
-                        {
-                            b1.Property<Guid>("VolunteerId")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("VolunteerId");
-
-                            b1.ToTable("volunteers");
-
-                            b1.ToJson("assistance_details");
-
-                            b1.WithOwner()
-                                .HasForeignKey("VolunteerId")
-                                .HasConstraintName("fk_volunteers_volunteers_id");
-
-                            b1.OwnsMany("PetFinder.Domain.Volunteer.ValueObjects.AssistanceDetails", "Values", b2 =>
-                                {
-                                    b2.Property<Guid>("ValueObjectListVolunteerId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("Description")
-                                        .IsRequired()
-                                        .ValueGeneratedOnUpdateSometimes()
-                                        .HasMaxLength(128)
-                                        .HasColumnType("character varying(128)")
-                                        .HasColumnName("description");
-
-                                    b2.Property<string>("Title")
-                                        .IsRequired()
-                                        .ValueGeneratedOnUpdateSometimes()
-                                        .HasMaxLength(64)
-                                        .HasColumnType("character varying(64)")
-                                        .HasColumnName("title");
-
-                                    b2.HasKey("ValueObjectListVolunteerId", "Id");
-
-                                    b2.ToTable("volunteers");
-
-                                    b2.ToJson("assistance_details");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ValueObjectListVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_value_object_list_volunteer_id");
-                                });
-
-                            b1.Navigation("Values");
-                        });
-
-                    b.OwnsOne("PetFinder.Domain.Shared.ValueObjects.ValueObjectList<PetFinder.Domain.Volunteer.ValueObjects.SocialNetwork>", "SocialNetworks", b1 =>
-                        {
-                            b1.Property<Guid>("VolunteerId")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("VolunteerId");
-
-                            b1.ToTable("volunteers");
-
-                            b1.ToJson("social_networks");
-
-                            b1.WithOwner()
-                                .HasForeignKey("VolunteerId")
-                                .HasConstraintName("fk_volunteers_volunteers_id");
-
-                            b1.OwnsMany("PetFinder.Domain.Volunteer.ValueObjects.SocialNetwork", "Values", b2 =>
-                                {
-                                    b2.Property<Guid>("ValueObjectListVolunteerId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("Title")
-                                        .IsRequired()
-                                        .ValueGeneratedOnUpdateSometimes()
-                                        .HasMaxLength(32)
-                                        .HasColumnType("character varying(32)")
-                                        .HasColumnName("title");
-
-                                    b2.Property<string>("Url")
-                                        .IsRequired()
-                                        .HasMaxLength(256)
-                                        .HasColumnType("character varying(256)")
-                                        .HasColumnName("url");
-
-                                    b2.HasKey("ValueObjectListVolunteerId", "Id");
-
-                                    b2.ToTable("volunteers");
-
-                                    b2.ToJson("social_networks");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ValueObjectListVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_value_object_list_volunteer_id");
-                                });
-
-                            b1.Navigation("Values");
-                        });
-
-                    b.Navigation("AssistanceDetails")
-                        .IsRequired();
-
-                    b.Navigation("SocialNetworks")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PetFinder.Domain.Species.Models.Species", b =>

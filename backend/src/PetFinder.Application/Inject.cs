@@ -1,7 +1,5 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using PetFinder.Application.Features;
-using PetFinder.Application.Features.Shared;
 using PetFinder.Application.Features.Shared.Interfaces;
 
 namespace PetFinder.Application;

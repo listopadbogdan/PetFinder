@@ -29,5 +29,8 @@ public class PetPhotoConfiguration : IEntityTypeConfiguration<PetPhoto>
         builder.ToTable(
             name: Constants.PetPhoto.TableName
         );
+        
+        builder.HasQueryFilter(photo => photo.IsDeleted == false);
+
     }
 }

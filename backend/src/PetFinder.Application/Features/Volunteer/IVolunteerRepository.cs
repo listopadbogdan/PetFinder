@@ -11,7 +11,6 @@ public interface IVolunteerRepository
     Task<VolunteerId> Add(Volunteer volunteer,
         CancellationToken cancellationToken);
 
-
     Task<Result<Volunteer>> GetById(VolunteerId volunteerId,
         CancellationToken cancellationToken);
 
@@ -26,6 +25,8 @@ public interface IVolunteerRepository
     
     public Task<bool> CheckEmailForExists(Email email,
         CancellationToken cancellationToken = default);
+
+    void Delete(Volunteer volunteer);
     void Save(Volunteer volunteer);
     public Task SaveChanges(CancellationToken cancellationToken);
 }
