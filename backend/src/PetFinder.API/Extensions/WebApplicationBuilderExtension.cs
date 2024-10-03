@@ -26,7 +26,7 @@ public static class WebApplicationBuilderExtension
         });
 
         builder.Services
-            .AddInfrastructure()
+            .AddInfrastructure(builder.Configuration)
             .AddApplication();
 
         return builder;
