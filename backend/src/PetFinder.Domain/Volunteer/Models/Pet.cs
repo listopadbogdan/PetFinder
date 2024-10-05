@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFinder.Domain.Shared.Exceptions;
 using PetFinder.Domain.Shared.Ids;
 using PetFinder.Domain.Shared.Interfaces;
 using PetFinder.Domain.SharedKernel;
