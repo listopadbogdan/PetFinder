@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetFinder.Application.Features;
 using PetFinder.Application.Providers;
+using PetFinder.Application.Providers.IFileProvider;
 using PetFinder.Infrastructure.Extensions;
 using PetFinder.Infrastructure.Providers;
 using PetFinder.Infrastructure.Repositories;
