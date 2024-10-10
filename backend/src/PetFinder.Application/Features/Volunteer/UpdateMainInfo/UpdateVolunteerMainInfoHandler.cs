@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFinder.Application.DataLayer;
 using PetFinder.Application.Extensions;
 using PetFinder.Application.Features.Shared.Interfaces;
 using PetFinder.Domain.Shared;
@@ -14,6 +15,7 @@ namespace PetFinder.Application.Features.UpdateMainInfo;
 // todo Need refactor for patch method for update only edited properties 
 public class UpdateVolunteerMainInfoHandler(
     IVolunteerRepository volunteerRepository,
+    IUnitOfWork unitOfWork,
     IValidator<UpdateVolunteerMainInfoRequest> validator,
     ILogger<UpdateVolunteerMainInfoHandler> logger) : IHandler
 {
@@ -58,7 +60,7 @@ public class UpdateVolunteerMainInfoHandler(
 
         volunteerRepository.Save(volunteer);
 
-        await volunteerRepository.SaveChanges(cancellationToken);
+        await unitOfWork.SaveChanges(cancellationToken);
 
         logger.LogTrace("Volunteer has been updated");
         return volunteer.Id.Value;

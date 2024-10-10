@@ -28,5 +28,4 @@ public interface IVolunteerRepository
 
     void Delete(Volunteer volunteer);
     void Save(Volunteer volunteer);
-    public Task SaveChanges(CancellationToken cancellationToken);
 }
