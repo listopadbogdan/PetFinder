@@ -21,37 +21,28 @@ public class CreateBreedHandler(
         CreateBreedCommand command,
         CancellationToken cancellationToken)
     {
-        logger.LogTrace("Starting handle");
-        try
-        {
-            var validationResult = await new CreateBreedCommandValidator().ValidateAsync(command, cancellationToken);
-            if (!validationResult.IsValid)
-                return validationResult.Errors.ToErrorList();
+        var validationResult = await new CreateBreedCommandValidator().ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return validationResult.Errors.ToErrorList();
 
-            var speciesResult = await repository.GetById(SpeciesId.Create(command.SpeciesId), cancellationToken);
-            if (speciesResult.IsFailure)
-                return Errors.General.RecordNotFound(nameof(Species), command.SpeciesId).ToErrorList();
+        var speciesResult = await repository.GetById(SpeciesId.Create(command.SpeciesId), cancellationToken);
+        if (speciesResult.IsFailure)
+            return Errors.General.RecordNotFound(nameof(Species), command.SpeciesId).ToErrorList();
 
-            var species = speciesResult.Value;
-            var breed = Breed.Create(
-                BreedId.New(),
-                BreedTitle.Create(command.Title).Value,
-                BreedDescription.Create(command.Description).Value,
-                species.Id
-            ).Value;
-            
-            var result = species.AddBreed(breed);
-            if (result.IsFailure)
-                return result.Error.ToErrorList();
+        var species = speciesResult.Value;
+        var breed = Breed.Create(
+            BreedId.New(),
+            BreedTitle.Create(command.Title).Value,
+            BreedDescription.Create(command.Description).Value,
+            species.Id
+        ).Value;
 
-            await unitOfWork.SaveChanges(cancellationToken);
+        var result = species.AddBreed(breed);
+        if (result.IsFailure)
+            return result.Error.ToErrorList();
 
-            return breed.Id.Value;
-        }
-        finally
-        {
-            logger.LogTrace("Finished handle");
-        }
-        
+        await unitOfWork.SaveChanges(cancellationToken);
+
+        return breed.Id.Value;
     }
 }

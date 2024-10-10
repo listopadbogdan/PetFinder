@@ -23,8 +23,6 @@ public class UpdateVolunteerMainInfoHandler(
         UpdateVolunteerMainInfoRequest request,
         CancellationToken cancellationToken)
     {
-        logger.LogTrace("Starting Handle");
-        
         var dto = request.Dto;
 
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -61,8 +59,6 @@ public class UpdateVolunteerMainInfoHandler(
         volunteerRepository.Save(volunteer);
 
         await unitOfWork.SaveChanges(cancellationToken);
-
-        logger.LogTrace("Volunteer has been updated");
         return volunteer.Id.Value;
     }
 

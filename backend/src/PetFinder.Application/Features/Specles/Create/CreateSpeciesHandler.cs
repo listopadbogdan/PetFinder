@@ -22,30 +22,22 @@ public class CreateSpeciesHandler(
         CreateSpeciesCommand command,
         CancellationToken cancellationToken)
     {
-        logger.LogTrace("Starting handle");
-        try
-        {
-            var validationResult = await validator.ValidateAsync(command, cancellationToken);
-            if (!validationResult.IsValid)
-                return validationResult.Errors.ToErrorList();
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return validationResult.Errors.ToErrorList();
 
-            if (await repository.ExistsByName(command.Title, cancellationToken))
-                return Errors.General.ValueIsNotUnique(command.Title).ToErrorList();
+        if (await repository.ExistsByName(command.Title, cancellationToken))
+            return Errors.General.ValueIsNotUnique(command.Title).ToErrorList();
 
-            var species = Species.Create(
-                SpeciesId.New(),
-                SpeciesTitle.Create(command.Title).Value
-            ).Value;
+        var species = Species.Create(
+            SpeciesId.New(),
+            SpeciesTitle.Create(command.Title).Value
+        ).Value;
 
-            repository.Add(species, cancellationToken);
+        repository.Add(species, cancellationToken);
 
-            await unitOfWork.SaveChanges(cancellationToken);
+        await unitOfWork.SaveChanges(cancellationToken);
 
-            return species.Id.Value;
-        }
-        finally
-        {
-            logger.LogTrace("Finished handle");
-        }
+        return species.Id.Value;
     }
 }

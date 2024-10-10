@@ -17,7 +17,8 @@ public class SpeciesController(ILogger<SpeciesController> logger)
         [FromServices] CreateSpeciesHandler handler,
         CancellationToken cancellationToken)
     {
-        var result = await handler.Handle(request, cancellationToken);
+        var command = new CreateSpeciesCommand(request.Title);
+        var result = await handler.Handle(command, cancellationToken);
         
         return result.IsFailure 
             ? result.Error.ToResponse() 

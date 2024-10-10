@@ -18,8 +18,6 @@ public class DeleteVolunteerHandler(
         Guid id, 
         CancellationToken cancellationToken)
     {
-        logger.LogTrace("Starting handle");
-
         var volunteerId = VolunteerId.Create(id);
         
         var volunteerByIdResult = await volunteerRepository.GetById(volunteerId, cancellationToken);
@@ -31,9 +29,6 @@ public class DeleteVolunteerHandler(
         volunteerRepository.Delete(volunteer);
         
         await unitOfWork.SaveChanges(cancellationToken);
-        
-        logger.LogTrace("Ending handle");
-        
         return volunteer.Id.Value;
     }
 }
