@@ -8,7 +8,7 @@ namespace PetFinder.Application.Features;
 
 public interface IVolunteerRepository
 {
-    Task<VolunteerId> Add(Volunteer volunteer,
+    VolunteerId Add(Volunteer volunteer,
         CancellationToken cancellationToken);
 
     Task<Result<Volunteer>> GetById(VolunteerId volunteerId,
